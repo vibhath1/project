@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function navigateToAdopt() {
-    window.location.href = "adopt.html"; // Replace 'adopt.html' with the URL of the page you want to navigate to}
-
+    window.location.href = "https://supertails.com/?srsltid=AfmBOormUvgL-MRKKWJloQlD2ubOHALl6PSG1NZKBUZ2fAG4x76KvNUK"; 
+    }
     const browseButton = document.querySelector('.btn.secondary');
     browseButton.addEventListener('click', function() {
         // Add browse functionality here
