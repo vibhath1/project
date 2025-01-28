@@ -18,9 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Adopt Now clicked');
     });
 
-    function navigateToAdopt() {
-    window.location.href = "https://supertails.com/?srsltid=AfmBOormUvgL-MRKKWJloQlD2ubOHALl6PSG1NZKBUZ2fAG4x76KvNUK"; 
-    }
     const browseButton = document.querySelector('.btn.secondary');
     browseButton.addEventListener('click', function() {
         // Add browse functionality here
