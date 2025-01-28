@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Adopt Now clicked');
     });
 
+    function navigateToAdopt() {
+    window.location.href = "adopt.html"; // Replace 'adopt.html' with the URL of the page you want to navigate to}
+
     const browseButton = document.querySelector('.btn.secondary');
     browseButton.addEventListener('click', function() {
         // Add browse functionality here
@@ -45,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Navigation link clicked:', this.textContent);
         });
     });
+
+    
 
     // Handle footer links
     const footerLinks = document.querySelectorAll('.footer-section a');
