@@ -40,18 +40,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.dropdown-content a');
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
+            if (!this.getAttribute('href').includes('register-pet.html'))
             e.preventDefault();
             // Add navigation functionality here
             console.log('Navigation link clicked:', this.textContent);
         });
     });
 
-    
-
     // Handle footer links
     const footerLinks = document.querySelectorAll('.footer-section a');
     footerLinks.forEach(link => {
         link.addEventListener('click', function(e) {
+            if (!this.getAttribute('href').includes('register-pet.html'))
             e.preventDefault();
             // Add footer link functionality here
             console.log('Footer link clicked:', this.textContent);
