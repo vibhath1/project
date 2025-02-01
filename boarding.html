@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Boarding & Daycare - Paws Connect</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="boarding.css">
+</head>
+<body>
+    <nav class="navbar fixed-navbar">
+        <div class="nav-content">
+            <div class="nav-logo">
+                <a href="index.html">Paws Connect</a>
+            </div>
+            <div class="nav-menu">
+                <a href="#services">Services</a>
+                <a href="#amenities">Amenities</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="boarding-container">
+        <!-- Hero Section -->
+        <div class="hero-section" style="background-image: url('https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&q=80')">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1>Luxury Pet Boarding & Daycare</h1>
+                <p>A 5-star resort experience for your beloved pets</p>
+                <a href="#booking" class="cta-button">Book Now</a>
+            </div>
+        </div>
+
+        <!-- Services Overview -->
+        <section id="services" class="services-section">
+            <div class="section-content">
+                <h2>Our Services</h2>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 11v3a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-3"/>
+                                <path d="M12 19H4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-3.83"/>
+                                <path d="m3 11 7.77-6.04a2 2 0 0 1 2.46 0L21 11H3Z"/>
+                                <path d="M12 19v-3"/>
+                            </svg>
+                        </div>
+                        <h3>Overnight Boarding</h3>
+                        <p>Luxury suites with 24/7 care and monitoring</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                        </div>
+                        <h3>Daycare</h3>
+                        <p>Supervised play and socialization while you work</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                            </svg>
+                        </div>
+                        <h3>Special Care</h3>
+                        <p>Customized care for seniors and special needs pets</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Amenities -->
+        <section id="amenities" class="amenities-section">
+            <div class="section-content">
+                <h2>Premium Amenities</h2>
+                <div class="amenities-grid">
+                    <div class="amenity-card">
+                        <img src="https://images.unsplash.com/photo-1601758174114-e711c0cbaa69?auto=format&fit=crop&q=80" alt="Luxury Suite" class="amenity-image">
+                        <div class="amenity-content">
+                            <h3>Luxury Suites</h3>
+                            <ul>
+                                <li>Climate controlled rooms</li>
+                                <li>Comfortable bedding</li>
+                                <li>Webcam monitoring</li>
+                                <li>Sound system for calming music</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="amenity-card">
+                        <img src="https://images.unsplash.com/photo-1601758125946-6ec2ef64daf8?auto=format&fit=crop&q=80" alt="Play Area" class="amenity-image">
+                        <div class="amenity-content">
+                            <h3>Play Areas</h3>
+                            <ul>
+                                <li>Indoor play zones</li>
+                                <li>Outdoor exercise yard</li>
+                                <li>Agility equipment</li>
+                                <li>Swimming pool (seasonal)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section id="pricing" class="pricing-section">
+            <div class="section-content">
+                <h2>Boarding Packages</h2>
+                <div class="pricing-grid">
+                    <div class="price-card">
+                        <h3>Standard Stay</h3>
+                        <p class="price">From $35/night</p>
+                        <ul>
+                            <li>Comfortable kennel</li>
+                            <li>3 daily walks</li>
+                            <li>Regular meals</li>
+                            <li>Basic monitoring</li>
+                        </ul>
+                        <a href="#booking" class="book-button">Book Now</a>
+                    </div>
+                    <div class="price-card featured">
+                        <div class="featured-label">Most Popular</div>
+                        <h3>Luxury Stay</h3>
+                        <p class="price">From $55/night</p>
+                        <ul>
+                            <li>Private suite</li>
+                            <li>5 daily walks</li>
+                            <li>Premium meals</li>
+                            <li>Playtime sessions</li>
+                            <li>Daily photo updates</li>
+                        </ul>
+                        <a href="#booking" class="book-button">Book Now</a>
+                    </div>
+                    <div class="price-card">
+                        <h3>VIP Experience</h3>
+                        <p class="price">From $75/night</p>
+                        <ul>
+                            <li>Deluxe suite</li>
+                            <li>Unlimited attention</li>
+                            <li>Gourmet meals</li>
+                            <li>Spa treatments</li>
+                            <li>Video calls with owner</li>
+                            <li>24/7 dedicated care</li>
+                        </ul>
+                        <a href="#booking" class="book-button">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Booking Section -->
+        <section id="booking" class="booking-section">
+            <div class="section-content">
+                <h2>Book a Stay</h2>
+                <form class="booking-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="petName">Pet's Name</label>
+                            <input type="text" id="petName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="package">Package Type</label>
+                            <select id="package" required>
+                                <option value="">Select a package</option>
+                                <option value="standard">Standard Stay</option>
+                                <option value="luxury">Luxury Stay</option>
+                                <option value="vip">VIP Experience</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="checkIn">Check-in Date</label>
+                            <input type="date" id="checkIn" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="checkOut">Check-out Date</label>
+                            <input type="date" id="checkOut" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="specialNeeds">Special Requirements</label>
+                        <textarea id="specialNeeds" rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Book Stay</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Gallery -->
+        <section id="gallery" class="gallery-section">
+            <div class="section-content">
+                <h2>Our Facility</h2>
+                <div class="gallery-grid">
+                    <img src="https://images.unsplash.com/photo-1601758174114-e711c0cbaa69?auto=format&fit=crop&q=80" alt="Luxury Pet Suite" class="gallery-image">
+                    <img src="https://images.unsplash.com/photo-1601758125946-6ec2ef64daf8?auto=format&fit=crop&q=80" alt="Indoor Play Area" class="gallery-image">
+                    <img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&q=80" alt="Outdoor Play Area" class="gallery-image">
+                    <img src="https://images.unsplash.com/photo-1415369629372-26f2fe60c467?auto=format&fit=crop&q=80" alt="Happy Dogs Playing" class="gallery-image">
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact" class="contact-section">
+            <div class="section-content">
+                <h2>Contact Us</h2>
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <h3>Get in Touch</h3>
+                        <p><strong>Phone:</strong> (555) 123-4567</p>
+                        <p><strong>Email:</strong> boarding@pawsconnect.com</p>
+                        <p><strong>Address:</strong> 123 Pet Paradise Lane</p>
+                        <div class="business-hours">
+                            <h4>Business Hours</h4>
+                            <p>Monday - Friday: 7:00 AM - 7:00 PM</p>
+                            <p>Saturday - Sunday: 8:00 AM - 6:00 PM</p>
+                        </div>
+                        <div class="social-links">
+                            <a href="#" aria-label="Facebook">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                                </svg>
+                            </a>
+                            <a href="#" aria-label="Instagram">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="newsletter-signup">
+                        <h3>Stay Updated</h3>
+                        <p>Subscribe to our newsletter for special offers and updates.</p>
+                        <form class="newsletter-form">
+                            <input type="email" placeholder="Enter your email" required>
+                            <button type="submit">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../scripts/services.js"></script>
+</body>
+</html>
