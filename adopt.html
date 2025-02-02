@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adopt a Pet - Paws Connect</title>
+    <link rel="stylesheet" href="adopt.css">
+</head>
+<body>
+    <nav class="navbar fixed-navbar">
+        <div class="nav-content">
+            <div class="nav-logo">
+                <a href="index.html">Paws Connect</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="adoption-container">
+        <!-- Filters Sidebar -->
+        <aside class="filters-sidebar">
+            <div class="filter-section">
+                <h2>Find Your Perfect Pet</h2>
+                
+                <div class="filter-group">
+                    <h3>Pet Type</h3>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="petType" value="all" checked>
+                            <span>All Pets</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="petType" value="dogs">
+                            <span>Dogs</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="petType" value="cats">
+                            <span>Cats</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3>Location</h3>
+                    <div class="location-filters">
+                        <select id="stateSelect" class="filter-select">
+                            <option value="">Select State</option>
+                            <option value="CA">California</option>
+                            <option value="NY">New York</option>
+                            <option value="TX">Texas</option>
+                            <option value="FL">Florida</option>
+                        </select>
+                        <select id="citySelect" class="filter-select">
+                            <option value="">Select City</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="apply-filters">Apply Filters</button>
+            </div>
+        </aside>
+
+        <!-- Pets Grid -->
+        <main class="pets-grid-container">
+            <div class="pets-header">
+                <h1>Available Pets</h1>
+                <div class="sort-controls">
+                    <select class="sort-select">
+                        <option value="recent">Most Recent</option>
+                        <option value="age">Age</option>
+                        <option value="name">Name</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="pets-grid" id="petsGrid">
+                <!-- Dogs -->
+                <div class="pet-card" data-type="dogs">
+                    <div class="pet-image">
+                        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&q=80" alt="Golden Retriever">
+                        <span class="adoption-badge">Available</span>
+                    </div>
+                    <div class="pet-info">
+                        <h3>Max</h3>
+                        <p class="pet-breed">Golden Retriever</p>
+                        <p class="pet-details">2 years old • Male</p>
+                        <p class="pet-location">San Francisco, CA</p>
+                        <button class="adopt-button">Meet Max</button>
+                    </div>
+                </div>
+
+                <div class="pet-card" data-type="dogs">
+                    <div class="pet-image">
+                        <img src="https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?auto=format&fit=crop&q=80" alt="German Shepherd">
+                        <span class="adoption-badge">Available</span>
+                    </div>
+                    <div class="pet-info">
+                        <h3>Luna</h3>
+                        <p class="pet-breed">German Shepherd</p>
+                        <p class="pet-details">1 year old • Female</p>
+                        <p class="pet-location">Los Angeles, CA</p>
+                        <button class="adopt-button">Meet Luna</button>
+                    </div>
+                </div>
+
+                <!-- Cats -->
+                <div class="pet-card" data-type="cats">
+                    <div class="pet-image">
+                        <img src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&q=80" alt="Siamese Cat">
+                        <span class="adoption-badge">Available</span>
+                    </div>
+                    <div class="pet-info">
+                        <h3>Milo</h3>
+                        <p class="pet-breed">Siamese</p>
+                        <p class="pet-details">1.5 years old • Male</p>
+                        <p class="pet-location">New York, NY</p>
+                        <button class="adopt-button">Meet Milo</button>
+                    </div>
+                </div>
+
+                <div class="pet-card" data-type="cats">
+                    <div class="pet-image">
+                        <img src="https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?auto=format&fit=crop&q=80" alt="Persian Cat">
+                        <span class="adoption-badge">Available</span>
+                    </div>
+                    <div class="pet-info">
+                        <h3>Bella</h3>
+                        <p class="pet-breed">Persian</p>
+                        <p class="pet-details">3 years old • Female</p>
+                        <p class="pet-location">Miami, FL</p>
+                        <button class="adopt-button">Meet Bella</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="adopt.js"></script>
+</body>
+</html>
