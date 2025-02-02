@@ -35,27 +35,29 @@ document.addEventListener('DOMContentLoaded', function () {
     loginButton.addEventListener('click', function () {
         console.log('Login clicked');
     });
-
 // Handle navigation links
 const navLinks = document.querySelectorAll('.dropdown-content a');
 navLinks.forEach(link => {
     link.addEventListener('click', function (e) {
-        if (!this.getAttribute('href').includes('register-pet.html') && !this.getAttribute('href').includes('boarding.html')) {
+        if (!this.getAttribute('href').includes('register-pet.html') && 
+            !this.getAttribute('href').includes('boarding.html') && 
+            !this.getAttribute('href').includes('grooming.html')) {
             e.preventDefault();
         }
         console.log('Navigation link clicked:', this.textContent);
     });
 });
 
-    // Handle footer links
-    const footerLinks = document.querySelectorAll('.footer-section a');
-    footerLinks.forEach(link => {
-        link.addEventListener('click', function (e) {
-            if (!this.getAttribute('href').includes('register-pet.html')&& !this.getAttribute('href').includes('boarding.html')) {
-                e.preventDefault();
+// Handle footer links
+const footerLinks = document.querySelectorAll('.footer-section a');
+footerLinks.forEach(link => {
+    link.addEventListener('click', function (e) {
+        if (!this.getAttribute('href').includes('register-pet.html') && 
+            !this.getAttribute('href').includes('boarding.html') && 
+            !this.getAttribute('href').includes('grooming.html')) {
+            e.preventDefault();
         } 
-            console.log('Footer link clicked:', this.textContent);
-        });
+        console.log('Footer link clicked:', this.textContent);
     });
 });
 
