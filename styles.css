@@ -74,8 +74,9 @@ body {
 .dropbtn:hover {
     color: #e11d48;
 }
+
+/* Improved Dropdown Menu */
 .dropdown-content {
-    display: none;
     position: absolute;
     right: 0;
     margin-top: 0.5rem;
@@ -85,12 +86,30 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 0.5rem 0;
     z-index: 50;
+
+    /* Prevent flickering */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-5px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    pointer-events: none;
 }
 
-.dropdown:hover .dropdown-content {
+/* Ensure the dropdown stays open when hovering */
+.dropdown:hover .dropdown-content,
+.dropdown-content:hover {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.dropdown-content.show {
     display: block;
 }
 
+
+/* Dropdown Menu Items */
 .dropdown-content li a {
     display: block;
     padding: 0.5rem 1rem;
@@ -102,7 +121,6 @@ body {
 .dropdown-content li a:hover {
     background-color: #fff1f2;
     color: #e11d48;
-
 }
 
 /* Button Styles */
@@ -134,7 +152,6 @@ body {
     border: none; /* Removes any border effect */
 }
 
-
 .login-button:hover {
     background-color: #be123c;
 }
@@ -145,15 +162,22 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
+    background-color: transparent; /* Ensure background is transparent */
+    border: none;
 }
 
 .btn.primary {
     background-color: #e11d48;
+    display: inline-flex;
     color: #ffffff;
-    border: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    box-shadow:none;
+    outline: none;
 }
 
+.btn-container {
+    background-color: transparent !important;
+}
 .btn.primary:hover {
     background-color: #be123c;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
@@ -214,7 +238,7 @@ body {
     .button-group {
         flex-direction: row;
     }
-    
+
     .hero-content p {
         font-size: 2.25rem;
     }
@@ -269,3 +293,4 @@ body {
 .footer-section ul li a:hover {
     color: #ffffff;
 }
+
