@@ -60,6 +60,63 @@ body {
     padding-top: 5rem;
 }
 
+/* Login Type Selection */
+.login-type-selection {
+    background: #ffffff;
+    border-radius: 1rem;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 28rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.login-type-selection h1 {
+    color: #111827;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.login-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.login-option-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #ffffff;
+    border: 2px solid #e11d48;
+    border-radius: 0.5rem;
+    color: #e11d48;
+    font-size: 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.login-option-btn:hover {
+    background: #e11d48;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.login-option-btn svg {
+    transition: transform 0.2s;
+}
+
+.login-option-btn:hover svg {
+    transform: scale(1.1);
+}
+
+/* Login Card Styles */
 .login-card {
     background: #ffffff;
     border-radius: 1rem;
@@ -67,7 +124,12 @@ body {
     width: 100%;
     max-width: 28rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
     animation: fadeIn 0.3s ease-out;
+}
+
+.admin-login {
+    background: linear-gradient(to bottom right, #ffffff, #f8fafc);
 }
 
 @keyframes fadeIn {
@@ -81,16 +143,36 @@ body {
     }
 }
 
+.back-button {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+}
+
+.back-button:hover {
+    color: #e11d48;
+    background: #fee2e2;
+}
+
 .login-card h1 {
     color: #111827;
     font-size: 1.875rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
+    text-align: center;
 }
 
 .subtitle {
     color: #6b7280;
     margin-bottom: 2rem;
+    text-align: center;
 }
 
 /* Form Styles */
@@ -279,12 +361,19 @@ body {
 
 /* Responsive Design */
 @media (max-width: 640px) {
-    .login-card {
+    .login-card,
+    .login-type-selection {
         padding: 1.5rem;
     }
 
-    .login-card h1 {
+    .login-card h1,
+    .login-type-selection h1 {
         font-size: 1.5rem;
+    }
+
+    .back-button {
+        top: 1rem;
+        left: 1rem;
     }
 }
 
@@ -296,7 +385,8 @@ body {
 
 /* High Contrast Mode */
 @media (forced-colors: active) {
-    .login-button {
+    .login-button,
+    .login-option-btn {
         border: 2px solid currentColor;
     }
     
@@ -304,6 +394,5 @@ body {
         border: 2px solid currentColor;
     }
 }
-
 
 
