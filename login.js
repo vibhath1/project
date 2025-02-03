@@ -1,170 +1,155 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const loginForm = document.getElementById('loginForm');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const togglePasswordBtn = document.querySelector('.toggle-password');
-    const loginButton = document.getElementById('loginButton');
-    const buttonText = loginButton.querySelector('.button-text');
-    const buttonLoader = loginButton.querySelector('.button-loader');
+    const loginTypeSelection = document.getElementById('loginTypeSelection');
+    const userLoginCard = document.getElementById('userLoginCard');
+    const adminLoginCard = document.getElementById('adminLoginCard');
+    const userLoginForm = document.getElementById('userLoginForm');
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const backButtons = document.querySelectorAll('.back-button');
+    const togglePasswordBtns = document.querySelectorAll('.toggle-password');
 
-    // Rate limiting variables
-    let failedAttempts = 0;
-    let lastAttemptTime = 0;
+    let failedAttempts = { user: 0, admin: 0 };
+    let lastAttemptTime = { user: 0, admin: 0 };
     const MAX_ATTEMPTS = 5;
-    const LOCKOUT_TIME = 15 * 60 * 1000; // 15 minutes in milliseconds
+    const LOCKOUT_TIME = 15 * 60 * 1000;
 
-    // Toggle password visibility
-    togglePasswordBtn.addEventListener('click', function() {
-        const type = passwordInput.type === 'password' ? 'text' : 'password';
-        passwordInput.type = type;
-        
-        const showIcon = this.querySelector('.show-password');
-        const hideIcon = this.querySelector('.hide-password');
-        showIcon.classList.toggle('hidden');
-        hideIcon.classList.toggle('hidden');
-        
-        // Update ARIA label
-        this.setAttribute('aria-label', 
-            type === 'password' ? 'Show password' : 'Hide password'
-        );
+    function showLoginTypeSelection() {
+        loginTypeSelection.classList.remove('hidden');
+        userLoginCard.classList.add('hidden');
+        adminLoginCard.classList.add('hidden');
+    }
+
+    function showLoginForm(type) {
+        loginTypeSelection.classList.add('hidden');
+        userLoginCard.classList.toggle('hidden', type !== 'user');
+        adminLoginCard.classList.toggle('hidden', type !== 'admin');
+    }
+
+    document.querySelectorAll('.login-option-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            showLoginForm(this.dataset.type);
+        });
     });
 
-    // Input validation functions
+    backButtons.forEach(button => {
+        button.addEventListener('click', showLoginTypeSelection);
+    });
+
+    togglePasswordBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('input');
+            input.type = input.type === 'password' ? 'text' : 'password';
+            this.querySelector('.show-password').classList.toggle('hidden');
+            this.querySelector('.hide-password').classList.toggle('hidden');
+            this.setAttribute('aria-label', input.type === 'password' ? 'Show password' : 'Hide password');
+        });
+    });
+
     function validateEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
     function validatePassword(password) {
-        const minLength = 8;
-        const hasNumber = /\d/.test(password);
-        const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-        
         return {
-            isValid: password.length >= minLength && hasNumber && hasSpecial,
+            isValid: password.length >= 8 && /\d/.test(password) && /[!@#$%^&*(),.?":{}|<>]/.test(password),
             errors: [
-                password.length < minLength && 'Password must be at least 8 characters long',
-                !hasNumber && 'Password must contain at least one number',
-                !hasSpecial && 'Password must contain at least one special character'
+                password.length < 8 && 'Password must be at least 8 characters long',
+                !/\d/.test(password) && 'Password must contain at least one number',
+                !/[!@#$%^&*(),.?":{}|<>]/.test(password) && 'Password must contain at least one special character'
             ].filter(Boolean)
         };
     }
 
-    // Real-time validation
-    emailInput.addEventListener('input', function() {
-        const isValid = validateEmail(this.value);
-        this.classList.toggle('error', !isValid);
-        
-        const errorElement = document.getElementById('emailError');
-        errorElement.textContent = isValid ? '' : 'Please enter a valid email address';
+    function validateUsername(username) {
+        return username.length >= 4;
+    }
+
+    document.getElementById('userEmail').addEventListener('input', function() {
+        const errorElement = document.getElementById('userEmailError');
+        errorElement.textContent = validateEmail(this.value) ? '' : 'Please enter a valid email address';
     });
 
-    passwordInput.addEventListener('input', function() {
+    document.getElementById('userPassword').addEventListener('input', function() {
         const validation = validatePassword(this.value);
-        this.classList.toggle('error', !validation.isValid);
-        
-        const errorElement = document.getElementById('passwordError');
-        errorElement.textContent = validation.isValid ? '' : validation.errors[0];
+        document.getElementById('userPasswordError').textContent = validation.isValid ? '' : validation.errors[0];
     });
 
-    // CSRF Protection
+    document.getElementById('adminUsername').addEventListener('input', function() {
+        document.getElementById('adminUsernameError').textContent = validateUsername(this.value) ? '' : 'Username must be at least 4 characters long';
+    });
+
+    document.getElementById('adminPassword').addEventListener('input', function() {
+        const validation = validatePassword(this.value);
+        document.getElementById('adminPasswordError').textContent = validation.isValid ? '' : validation.errors[0];
+    });
+
     function generateCSRFToken() {
         return Array.from(crypto.getRandomValues(new Uint8Array(32)))
             .map(byte => byte.toString(16).padStart(2, '0'))
             .join('');
     }
 
-    // Store CSRF token in session storage
     const csrfToken = generateCSRFToken();
     sessionStorage.setItem('csrfToken', csrfToken);
 
-    // Form submission
-    loginForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
+    async function simulateLoginRequest(type, data) {
+        return new Promise(resolve => setTimeout(() => resolve({ success: true }), 1500));
+    }
 
-        // Check rate limiting
+    function handleFormSubmission(formType, event) {
+        event.preventDefault();
         const now = Date.now();
-        if (failedAttempts >= MAX_ATTEMPTS && (now - lastAttemptTime) < LOCKOUT_TIME) {
-            const remainingTime = Math.ceil((LOCKOUT_TIME - (now - lastAttemptTime)) / 60000);
-            alert(`Too many failed attempts. Please try again in ${remainingTime} minutes.`);
+
+        if (failedAttempts[formType] >= MAX_ATTEMPTS && (now - lastAttemptTime[formType]) < LOCKOUT_TIME) {
+            alert(`Too many failed attempts. Please try again in ${Math.ceil((LOCKOUT_TIME - (now - lastAttemptTime[formType])) / 60000)} minutes.`);
             return;
         }
 
-        // Validate inputs
-        const email = emailInput.value;
-        const password = passwordInput.value;
-        
-        const emailValid = validateEmail(email);
-        const passwordValid = validatePassword(password).isValid;
+        const form = event.target;
+        const button = form.querySelector('.login-button');
+        const buttonText = button.querySelector('.button-text');
+        const buttonLoader = button.querySelector('.button-loader');
 
-        if (!emailValid || !passwordValid) {
-            return;
-        }
-
-        // Show loading state
-        loginButton.disabled = true;
+        button.disabled = true;
         buttonText.classList.add('hidden');
         buttonLoader.classList.remove('hidden');
 
-        try {
-            // Simulate API call with artificial delay
-            await new Promise(resolve => setTimeout(resolve, 1500));
+        setTimeout(async () => {
+            try {
+                const response = await simulateLoginRequest(formType, {
+                    username: form.querySelector('input[type="text"]')?.value,
+                    email: form.querySelector('input[type="email"]')?.value,
+                    password: form.querySelector('input[type="password"]').value,
+                    remember: form.querySelector('input[type="checkbox"]').checked,
+                    csrfToken
+                });
 
-            // Here you would normally make an API call to your backend
-            const response = await simulateLoginRequest({
-                email,
-                password,
-                csrfToken,
-                remember: document.getElementById('remember').checked
-            });
-
-            if (response.success) {
-                // Reset failed attempts on successful login
-                failedAttempts = 0;
-                
-                // Redirect to dashboard or home page
-                window.location.href = '/';
-            } else {
-                throw new Error('Invalid credentials');
+                if (response.success) {
+                    failedAttempts[formType] = 0;
+                    window.location.href = formType === 'admin' ? '/admin' : '/dashboard';
+                } else {
+                    throw new Error('Invalid credentials');
+                }
+            } catch (error) {
+                failedAttempts[formType]++;
+                lastAttemptTime[formType] = Date.now();
+                document.getElementById(formType === 'admin' ? 'adminUsernameError' : 'userEmailError').textContent = `Invalid credentials (${MAX_ATTEMPTS - failedAttempts[formType]} attempts remaining)`;
+            } finally {
+                button.disabled = false;
+                buttonText.classList.remove('hidden');
+                buttonLoader.classList.add('hidden');
             }
-
-        } catch (error) {
-            // Handle failed login attempt
-            failedAttempts++;
-            lastAttemptTime = Date.now();
-
-            const errorElement = document.getElementById('emailError');
-            errorElement.textContent = 'Invalid email or password';
-            
-            // Show remaining attempts
-            const remainingAttempts = MAX_ATTEMPTS - failedAttempts;
-            if (remainingAttempts > 0) {
-                errorElement.textContent += ` (${remainingAttempts} attempts remaining)`;
-            }
-
-        } finally {
-            // Reset button state
-            loginButton.disabled = false;
-            buttonText.classList.remove('hidden');
-            buttonLoader.classList.add('hidden');
-        }
-    });
-
-    // Simulate login request (replace with actual API call)
-    async function simulateLoginRequest(data) {
-        // This is just a simulation - replace with actual API call
-        return new Promise((resolve) => {
-            // Simulate successful login for demo purposes
-            // In production, this would be an actual API call
-            resolve({ success: true });
-        });
+        }, 1500);
     }
 
-    // Handle "Enter" key in password field
-    passwordInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            loginButton.click();
-        }
+    userLoginForm.addEventListener('submit', (e) => handleFormSubmission('user', e));
+    adminLoginForm.addEventListener('submit', (e) => handleFormSubmission('admin', e));
+
+    document.getElementById('userPassword').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') userLoginForm.querySelector('button[type="submit"]').click();
+    });
+
+    document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') adminLoginForm.querySelector('button[type="submit"]').click();
     });
 });
+
