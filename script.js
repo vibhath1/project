@@ -41,7 +41,8 @@ navLinks.forEach(link => {
     link.addEventListener('click', function (e) {
         if (!this.getAttribute('href').includes('register-pet.html') && 
             !this.getAttribute('href').includes('boarding.html') && 
-            !this.getAttribute('href').includes('grooming.html')) {
+            !this.getAttribute('href').includes('grooming.html') &&
+            !this.getAttribute('href').includes('consult.html')) {
             e.preventDefault();
         }
         console.log('Navigation link clicked:', this.textContent);
@@ -54,10 +55,10 @@ footerLinks.forEach(link => {
     link.addEventListener('click', function (e) {
         if (!this.getAttribute('href').includes('register-pet.html') && 
             !this.getAttribute('href').includes('boarding.html') && 
-            !this.getAttribute('href').includes('grooming.html')) {
+            !this.getAttribute('href').includes('grooming.html') &&
+            !this.getAttribute('href').includes('consult.html')) {
             e.preventDefault();
         } 
         console.log('Footer link clicked:', this.textContent);
     });
 });
-
