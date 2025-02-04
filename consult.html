@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Vet Consultation - Paws Connect</title>
+    <link rel="stylesheet" href="consult.css">
+</head>
+<body>
+    <nav class="navbar fixed-navbar">
+        <div class="nav-content">
+            <div class="nav-logo">
+                <a href="index.html">Paws Connect</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="consultation-container">
+        <div class="form-wrapper">
+            <div class="emergency-notice">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                    <path d="M12 9v4"/>
+                    <path d="M12 17h.01"/>
+                </svg>
+                <p>For emergencies, please contact your nearest animal hospital immediately</p>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress" id="formProgress"></div>
+                <div class="steps">
+                    <div class="step active" data-step="1">1</div>
+                    <div class="step" data-step="2">2</div>
+                    <div class="step" data-step="3">3</div>
+                </div>
+            </div>
+
+            <form id="consultationForm" class="consultation-form">
+                <!-- Step 1: Pet Information -->
+                <div class="form-step" id="step1">
+                    <h2>Pet Information</h2>
+                    <p class="step-description">Tell us about your pet and their symptoms</p>
+
+                    <div class="form-group">
+                        <label for="petType">Pet Type</label>
+                        <select id="petType" name="petType" required>
+                            <option value="">Select pet type</option>
+                            <option value="dog">Dog</option>
+                            <option value="cat">Cat</option>
+                            <option value="bird">Bird</option>
+                            <option value="rabbit">Rabbit</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="petAge">Pet Age</label>
+                        <input type="number" id="petAge" name="petAge" min="0" step="0.1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="symptoms">Symptoms Observed</label>
+                        <textarea id="symptoms" name="symptoms" rows="4" required 
+                            placeholder="Please describe the symptoms in detail..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="symptomStart">When did symptoms start?</label>
+                        <input type="date" id="symptomStart" name="symptomStart" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="medicalHistory">Medical History</label>
+                        <textarea id="medicalHistory" name="medicalHistory" rows="4" 
+                            placeholder="Any previous conditions, medications, or relevant medical history..."></textarea>
+                    </div>
+
+                    <button type="button" class="next-button" data-next="2">Next</button>
+                </div>
+
+                <!-- Step 2: Contact Information -->
+                <div class="form-step hidden" id="step2">
+                    <h2>Contact Information</h2>
+                    <p class="step-description">Provide your contact details for the consultation</p>
+
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="consultDate">Preferred Consultation Date</label>
+                        <input type="date" id="consultDate" name="consultDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="timeSlot">Preferred Time Slot</label>
+                        <select id="timeSlot" name="timeSlot" required>
+                            <option value="">Select time slot</option>
+                            <option value="morning">Morning (9 AM - 12 PM)</option>
+                            <option value="afternoon">Afternoon (12 PM - 4 PM)</option>
+                            <option value="evening">Evening (4 PM - 7 PM)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zipCode">Zip Code</label>
+                        <input type="text" id="zipCode" name="zipCode" required>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="back-button" data-back="1">Back</button>
+                        <button type="button" class="next-button" data-next="3">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Available Veterinarians -->
+                <div class="form-step hidden" id="step3">
+                    <h2>Available Veterinarians</h2>
+                    <p class="step-description">Select a veterinarian for your consultation</p>
+
+                    <div class="vet-list" id="vetList">
+                        <!-- Vet cards will be dynamically populated -->
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="back-button" data-back="2">Back</button>
+                        <button type="submit" class="submit-button">Schedule Consultation</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Success Animation -->
+        <div class="success-animation hidden" id="successAnimation">
+            <div class="success-content">
+                <div class="checkmark-circle">
+                    <div class="checkmark"></div>
+                </div>
+                <h2>Consultation Scheduled!</h2>
+                <p>We've sent a confirmation email with all the details.</p>
+                <div class="pet-animation">
+                    <div class="pet-head"></div>
+                    <div class="pet-body"></div>
+                    <div class="pet-tail"></div>
+                </div>
+                <button class="close-button">Done</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="consult.js"></script>
+</body>
+</html>
