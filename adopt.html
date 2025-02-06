@@ -76,7 +76,7 @@
                 <!-- Dogs -->
                 <div class="pet-card" data-type="dogs">
                     <div class="pet-image">
-                        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&q=80" alt="Golden Retriever">
+                        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&q=80" alt="Golden Retriever" loading="lazy">
                         <span class="adoption-badge">Available</span>
                     </div>
                     <div class="pet-info">
@@ -84,13 +84,13 @@
                         <p class="pet-breed">Golden Retriever</p>
                         <p class="pet-details">2 years old • Male</p>
                         <p class="pet-location">San Francisco, CA</p>
-                        <button class="adopt-button">Meet Max</button>
+                        <button class="view-details-button" data-pet-id="1">View Details</button>
                     </div>
                 </div>
 
                 <div class="pet-card" data-type="dogs">
                     <div class="pet-image">
-                        <img src="https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?auto=format&fit=crop&q=80" alt="German Shepherd">
+                        <img src="https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?auto=format&fit=crop&q=80" alt="German Shepherd" loading="lazy">
                         <span class="adoption-badge">Available</span>
                     </div>
                     <div class="pet-info">
@@ -98,14 +98,14 @@
                         <p class="pet-breed">German Shepherd</p>
                         <p class="pet-details">1 year old • Female</p>
                         <p class="pet-location">Los Angeles, CA</p>
-                        <button class="adopt-button">Meet Luna</button>
+                        <button class="view-details-button" data-pet-id="2">View Details</button>
                     </div>
                 </div>
 
                 <!-- Cats -->
                 <div class="pet-card" data-type="cats">
                     <div class="pet-image">
-                        <img src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&q=80" alt="Siamese Cat">
+                        <img src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&q=80" alt="Siamese Cat" loading="lazy">
                         <span class="adoption-badge">Available</span>
                     </div>
                     <div class="pet-info">
@@ -113,13 +113,13 @@
                         <p class="pet-breed">Siamese</p>
                         <p class="pet-details">1.5 years old • Male</p>
                         <p class="pet-location">New York, NY</p>
-                        <button class="adopt-button">Meet Milo</button>
+                        <button class="view-details-button" data-pet-id="3">View Details</button>
                     </div>
                 </div>
 
                 <div class="pet-card" data-type="cats">
                     <div class="pet-image">
-                        <img src="https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?auto=format&fit=crop&q=80" alt="Persian Cat">
+                        <img src="https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?auto=format&fit=crop&q=80" alt="Persian Cat" loading="lazy">
                         <span class="adoption-badge">Available</span>
                     </div>
                     <div class="pet-info">
@@ -127,11 +127,107 @@
                         <p class="pet-breed">Persian</p>
                         <p class="pet-details">3 years old • Female</p>
                         <p class="pet-location">Miami, FL</p>
-                        <button class="adopt-button">Meet Bella</button>
+                        <button class="view-details-button" data-pet-id="4">View Details</button>
                     </div>
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- Pet Details Modal -->
+    <div class="modal" id="petModal" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Close modal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 6 6 18"/>
+                    <path d="m6 6 12 12"/>
+                </svg>
+            </button>
+            <div class="modal-body">
+                <div class="pet-profile">
+                    <div class="pet-profile-header">
+                        <img class="pet-profile-image" alt="Pet photo" loading="lazy">
+                        <div class="pet-profile-info">
+                            <h2 id="modalTitle"></h2>
+                            <p class="pet-profile-breed"></p>
+                            <p class="pet-profile-details"></p>
+                            <p class="pet-profile-location"></p>
+                        </div>
+                    </div>
+
+                    <div class="pet-profile-section">
+                        <h3>Vaccination Status</h3>
+                        <div class="vaccination-list"></div>
+                    </div>
+
+                    <div class="pet-profile-section">
+                        <h3>Personality & Behavior</h3>
+                        <div class="personality-traits"></div>
+                    </div>
+
+                    <div class="pet-profile-section">
+                        <h3>About Me</h3>
+                        <p class="pet-biography"></p>
+                    </div>
+
+                    <div class="pet-profile-section">
+                        <h3>Contact Information</h3>
+                        <div class="contact-info">
+                            <div class="contact-detail">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                </svg>
+                                <span class="contact-phone"></span>
+                            </div>
+                            <div class="contact-detail">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect width="20" height="16" x="2" y="4" rx="2"/>
+                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                                </svg>
+                                <span class="contact-email"></span>
+                            </div>
+                            <div class="contact-detail">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                                <span class="contact-time"></span>
+                            </div>
+                            <div class="contact-detail">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                                <span class="contact-location"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pet-profile-section">
+                        <h3>Interested in Adopting?</h3>
+                        <form class="contact-form">
+                            <div class="form-group">
+                                <label for="name">Your Name</label>
+                                <input type="text" id="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="submit-button">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="adopt.js"></script>

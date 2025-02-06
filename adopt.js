@@ -4,6 +4,37 @@ document.addEventListener('DOMContentLoaded', function() {
     const stateSelect = document.getElementById('stateSelect');
     const citySelect = document.getElementById('citySelect');
     const applyFiltersBtn = document.querySelector('.apply-filters');
+    const modal = document.getElementById('petModal');
+    const modalClose = modal.querySelector('.modal-close');
+
+    // Pet data (in production, this would come from an API)
+    const petData = {
+        1: {
+            name: 'Max',
+            breed: 'Golden Retriever',
+            age: '2 years',
+            gender: 'Male',
+            location: 'San Francisco, CA',
+            image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&q=80',
+            vaccinations: [
+                { name: 'Rabies', date: '2023-05-15' },
+                { name: 'DHPP', date: '2023-04-20' },
+                { name: 'Bordetella', date: '2023-06-01' }
+            ],
+            traits: ['Friendly', 'Energetic', 'Good with kids', 'Trained', 'Playful'],
+            likes: ['Long walks', 'Playing fetch', 'Swimming', 'Car rides'],
+            dislikes: ['Being alone', 'Thunderstorms', 'Vacuum cleaners'],
+            biography: 'Max is a loving and energetic Golden Retriever who brings joy to everyone he meets. He\'s well-trained, great with children, and loves outdoor activities. Despite his boundless energy, he\'s also content to cuddle on the couch after a day of play. Max would thrive in an active family that can give him plenty of exercise and attention.',
+            contact: {
+                name: 'Golden Gate Animal Shelter',
+                phone: '(555) 123-4567',
+                email: 'adopt@ggashelter.org',
+                hours: '9:00 AM - 5:00 PM',
+                location: '123 Shelter Lane, San Francisco, CA'
+            }
+        },
+        // Add more pet data as needed
+    };
 
     // City options by state
     const cityOptions = {
@@ -34,17 +65,14 @@ document.addEventListener('DOMContentLoaded', function() {
             
             let showCard = true;
 
-            // Filter by type
             if (selectedType !== 'all' && petType !== selectedType) {
                 showCard = false;
             }
 
-            // Filter by state
             if (selectedState && !location.includes(selectedState)) {
                 showCard = false;
             }
 
-            // Filter by city
             if (selectedCity && !location.includes(selectedCity)) {
                 showCard = false;
             }
@@ -55,6 +83,120 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Apply filters when button is clicked
     applyFiltersBtn.addEventListener('click', filterPets);
+
+    // Handle view details button clicks
+    document.querySelectorAll('.view-details-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const petId = this.dataset.petId;
+            const pet = petData[petId];
+            
+            if (pet) {
+                // Populate modal with pet data
+                modal.querySelector('.pet-profile-image').src = pet.image;
+                modal.querySelector('#modalTitle').textContent = pet.name;
+                modal.querySelector('.pet-profile-breed').textContent = pet.breed;
+                modal.querySelector('.pet-profile-details').textContent = `${pet.age} • ${pet.gender}`;
+                modal.querySelector('.pet-profile-location').textContent = pet.location;
+
+                // Vaccinations
+                const vaccinationList = modal.querySelector('.vaccination-list');
+                vaccinationList.innerHTML = pet.vaccinations.map(vax => `
+                    <div class="vaccination-item">
+                        <strong>${vax.name}</strong>
+                        <div>${new Date(vax.date).toLocaleDateString()}</div> </div>
+                    `).join('');
+
+                // Personality traits
+                const personalityTraits = modal.querySelector('.personality-traits');
+                personalityTraits.innerHTML = pet.traits.map(trait => `
+                    <span class="trait-tag">${trait}</span>
+                `).join('');
+
+                // Biography
+                modal.querySelector('.pet-biography').textContent = pet.biography;
+
+                // Contact information
+                modal.querySelector('.contact-phone').textContent = pet.contact.phone;
+                modal.querySelector('.contact-email').textContent = pet.contact.email;
+                modal.querySelector('.contact-time').textContent = pet.contact.hours;
+                modal.querySelector('.contact-location').textContent = pet.contact.location;
+
+                // Show modal
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+
+                // Focus first interactive element
+                modal.querySelector('.modal-close').focus();
+            }
+        });
+    });
+
+    // Handle modal close
+    function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    // Handle contact form submission
+    const contactForm = modal.querySelector('.contact-form');
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitButton = this.querySelector('.submit-button');
+        const originalText = submitButton.textContent;
+        
+        try {
+            // Show loading state
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+            
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // Show success message
+            alert('Your message has been sent! The shelter will contact you soon.');
+            this.reset();
+            closeModal();
+            
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+            
+        } finally {
+            // Reset button state
+            submitButton.disabled = false;
+            submitButton.textContent = originalText;
+        }
+    });
+
+    // Form validation
+    const formInputs = contactForm.querySelectorAll('input, textarea');
+    formInputs.forEach(input => {
+        input.addEventListener('invalid', function(e) {
+            e.preventDefault();
+            this.classList.add('error');
+        });
+
+        input.addEventListener('input', function() {
+            if (this.validity.valid) {
+                this.classList.remove('error');
+            }
+        });
+    });
 
     // Initialize with all pets shown
     filterPets();
