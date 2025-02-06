@@ -131,6 +131,39 @@ body {
         display: block;
     }
 }
+/* Add-on Services Section */
+.addon-services {
+    background: #fdf2f8;
+    padding: 5rem 0;
+}
+
+.addon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+
+.addon-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.addon-card:hover {
+    transform: translateY(-5px);
+}
+
+.addon-price {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #db2777;
+    margin: 0.5rem 0;
+}
+
 /* Hero Section */
 .service-hero {
     position: relative;
