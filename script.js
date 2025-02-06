@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     dropdownButton.addEventListener('click', function (event) {
         event.stopPropagation(); // Prevent click from bubbling up
         dropdownContent.classList.toggle('show'); // Toggle visibility
+        });
     });
 
     document.addEventListener('click', function (event) {
