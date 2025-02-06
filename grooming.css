@@ -163,6 +163,78 @@ body {
     color: #db2777;
     margin: 0.5rem 0;
 }
+/* Pricing Section */
+.pricing-section {
+    padding: 5rem 0;
+    background: white;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.price-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.price-card:hover {
+    transform: translateY(-5px);
+}
+
+.price-card.featured {
+    border: 2px solid #e11d48;
+    transform: scale(1.05);
+}
+
+.price-card.featured:hover {
+    transform: scale(1.05) translateY(-5px);
+}
+
+.featured-label {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #e11d48;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.price-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+.price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #e11d48;
+    margin-bottom: 1.5rem;
+}
+
+.price-card ul {
+    list-style: none;
+    margin: 0 0 2rem 0;
+    padding: 0;
+}
+
+.price-card ul li {
+    padding: 0.5rem 0;
+    color: #6b7280;
+}
 
 /* Hero Section */
 .service-hero {
