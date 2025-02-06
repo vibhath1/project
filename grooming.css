@@ -71,7 +71,66 @@ body {
 .service-container {
     padding-top: 4rem;
 }
+/* Grooming Process Section */
+.grooming-process {
+    padding: 5rem 0;
+    background: white;
+}
 
+.process-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.step-card {
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    background: #db2777;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin: 0 auto 1.5rem;
+}
+
+.step-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+.step-card p {
+    color: #6b7280;
+}
+
+/* Connect steps with lines */
+.step-card::after {
+    content: '';
+    position: absolute;
+    top: 40px;
+    right: -1rem;
+    width: 2rem;
+    height: 2px;
+    background: #e5e7eb;
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .step-card:not(:last-child)::after {
+        display: block;
+    }
+}
 /* Hero Section */
 .service-hero {
     position: relative;
