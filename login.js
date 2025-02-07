@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const data = await response.json();
   
         if (response.ok) {
-          window.location.href = "/index.html";
+          window.location.href = "/project/index.html";
         } else {
           throw new Error(data.message || "Invalid credentials");
         }
