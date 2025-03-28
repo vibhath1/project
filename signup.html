@@ -16,104 +16,37 @@
                 </div>
             </div>
         </nav>
-
-        <!-- Signup Container -->
-        <main class="signup-container">
-            <div class="signup-card" id="userSignupCard">
-                <h1>Create an Account</h1>
-                <p class="subtitle">Join Paws Connect today!</p>
-
-                <form id="userSignupForm" class="signup-form" novalidate>
-                    
-                    <!-- Full Name -->
-                    <div class="form-group">
-                        <label for="fullName">Full Name</label>
-                        <input 
-                            type="text" 
-                            id="fullName" 
-                            name="fullName" 
-                            required 
-                            autocomplete="name"
-                            aria-describedby="fullNameError"
-                        >
-                        <span id="fullNameError" class="error-message" role="alert"></span>
-                    </div>
-
-                    <!-- Email -->
-                    <div class="form-group">
-                        <label for="userEmail">Email</label>
-                        <input 
-                            type="email" 
-                            id="userEmail" 
-                            name="email" 
-                            required 
-                            autocomplete="email"
-                            aria-describedby="userEmailError"
-                        >
-                        <span id="userEmailError" class="error-message" role="alert"></span>
-                    </div>
-
-                    <!-- Password -->
-                    <div class="form-group">
-                        <label for="userPassword">Password</label>
-                        <input 
-                            type="password" 
-                            id="userPassword" 
-                            name="password" 
-                            required
-                            autocomplete="new-password"
-                            aria-describedby="userPasswordError"
-                        >
-                        <span id="userPasswordError" class="error-message" role="alert"></span>
-                    </div>
-
-                    <!-- Confirm Password -->
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirm Password</label>
-                        <input 
-                            type="password" 
-                            id="confirmPassword" 
-                            name="confirmPassword" 
-                            required
-                            autocomplete="new-password"
-                            aria-describedby="confirmPasswordError"
-                        >
-                        <span id="confirmPasswordError" class="error-message" role="alert"></span>
-                    </div>
-
-                    <!-- Terms & Conditions -->
-                    <div class="form-group-inline">
-                        <label class="checkbox-wrapper">
-                            <input 
-                                type="checkbox" 
-                                id="termsAgreement" 
-                                name="terms"
-                                required
-                            >
-                            <span class="checkbox-label">
-                                I agree to the 
-                                <a href="#" class="terms-link">Terms & Conditions</a>
-                            </span>
-                        </label>
-                    </div>
-
-                    <!-- Signup Button -->
-                    <button 
-                        type="submit" 
-                        class="signup-button" 
-                        id="userSignupButton"
-                    >
-                        <span class="button-text">Sign Up</span>
-                        <div class="button-loader hidden"></div>
-                    </button>
-                </form>
-
-                <p class="login-prompt">
-                    Already have an account? 
-                    <a href="login.html" class="login-link">Log in</a>
-                </p>
+           <div class="signup-container">
+        <h1>Create Account</h1>
+        <p class="subtitle">Sign up to get started</p>
+        
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required>
             </div>
-        </main>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+            </div>
+
+            <button type="submit" class="signup-btn">Sign Up</button>
+        </form>
+
+        <div class="login-link">
+            Already have an account? <a href="login.html">Log In</a>
+        </div>
     </div>
     <script src="signup.js"></script>
 </body>
