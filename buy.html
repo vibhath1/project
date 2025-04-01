@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adopt a Pet - Paws Connect</title>
+    <link rel="stylesheet" href="buy.css">
+</head>
+<body>
+    <nav class="navbar fixed-navbar">
+        <div class="nav-content">
+            <div class="nav-logo">
+                <a href="index.html">Paws Connect</a>
+            </div>
+         <div class="cart-container">
+                <button id="cart-btn" class="cart-btn">
+                    <span class="cart-icon">🛒</span>
+                    <span id="cart-count" class="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="adoption-container">
+        <!-- Filters Sidebar -->
+        <aside class="filters-sidebar">
+            <div class="filter-section">
+                <h2>Find Your Perfect Pet</h2>
+                
+                <div class="filter-group">
+                    <h3>Pet Type</h3>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="petType" value="all" checked>
+                            <span>All Pets</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="petType" value="dogs">
+                            <span>Dogs</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="petType" value="cats">
+                            <span>Cats</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3>Location</h3>
+                    <div class="location-filters">
+                        <select id="stateSelect" class="filter-select">
+                            <option value="">Select State</option>
+                            <option value="CA">California</option>
+                            <option value="NY">New York</option>
+                            <option value="TX">Texas</option>
+                            <option value="FL">Florida</option>
+                        </select>
+                        <select id="citySelect" class="filter-select">
+                            <option value="">Select City</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="apply-filters">Apply Filters</button>
+            </div>
+        </aside>
+
+        <!-- Pets Grid -->
+        <main class="pets-grid-container">
+            <div class="pets-header">
+                <h1>Available Pets</h1>
+                <div class="sort-controls">
+                    <select class="sort-select">
+                        <option value="recent">Most Recent</option>
+                        <option value="age">Age</option>
+                        <option value="name">Name</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="pets grid" id="petsGrid">
+                <!-- Dogs -->
+                <div class="product-card" data-type="dogs" data-id="1">
+                    <div class="pet-image">
+                        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&q=80" alt="Golden Retriever" loading="lazy">
+                        <span class="adoption-badge">Available</span>
+                    </div>
+                    <div class="pet-info">
+                        <h3>Max</h3>
+                        <p class="pet-breed">Golden Retriever</p>
+                        <p class="pet-details">2 years old • Male</p>
+                        <p class="pet-location">San Francisco, CA</p>
+                      <div class="pet-actions">
+                        <button class="view-details-button" data-pet-id="1">View Details</button>
+                        <button class="add-to-cart" data-id="1" data-name="Golden Retriever" data-price="199.99">Adopt Now</button>
+                    </div>
+                </div>
+               </div>
+                <div class="pet-card" data-type="dogs" data-id="2">
+                    <div class="pet-image">
+                        <img src="https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?auto=format&fit=crop&q=80" alt="German Shepherd" loading="lazy">
+                        <span class="adoption-badge">Available</span>
+                    </div>
+                    <div class="pet-info">
+                        <h3>Luna</h3>
+                        <p class="pet-breed">German Shepherd</p>
+                        <p class="pet-details">1 year old • Female</p>
+                        <p class="pet-location">Los Angeles, CA</p>
+                         <div class="pet-actions">
+                        <button class="view-details-button" data-pet-id="2">View Details</button>
+                        <button class="buy-now-btn" onclick="addToCart(2)">Buy Now</button>
+                    </div>
+
+                    </div>
+                </div>
+
+                <!-- Cats -->
+                <div class="pet-card" data-type="cats" data-id="3">
+                    <div class="pet-image">
+                        <img src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&q=80" alt="Siamese Cat" loading="lazy">
+                        <span class="adoption-badge">Available</span>
+                    </div>
+                    <div class="pet-info">
+                        <h3>Milo</h3>
+                        <p class="pet-breed">Siamese</p>
+                        <p class="pet-details">1.5 years old • Male</p>
+                        <p class="pet-location">New York, NY</p>
+                         <div class="pet-actions">
+                        <button class="view-details-button" data-pet-id="3">View Details</button>
+                        <button class="buy-now-btn" onclick="addToCart(3)">Buy Now</button>
+                    </div>
+
+                    </div>
+                </div>
+
+                <div class="pet-card" data-type="cats" data-id="4">
+                    <div class="pet-image">
+                        <img src="https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?auto=format&fit=crop&q=80" alt="Persian Cat" loading="lazy">
+                        <span class="adoption-badge">Available</span>
+                    </div>
+                    <div class="pet-info">
+                        <h3>Bella</h3>
+                        <p class="pet-breed">Persian</p>
+                        <p class="pet-details">3 years old • Female</p>
+                        <p class="pet-location">Miami, FL</p>
+                         <div class="pet-actions">
+                        <button class="view-details-button" data-pet-id="4">View Details</button>
+                        <button class="buy-now-btn" onclick="addToCart(4)">Buy Now</button>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Pet Details Modal -->
+    <div class="modal" id="petModal" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Close modal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 6 6 18"/>
+                    <path d="m6 6 12 12"/>
+                </svg>
+            </button>
+            <div class="modal-body">
+                <div class="pet-profile">
+                    <div class="pet-profile-header">
+                        <img class="pet-profile-image" alt="Pet photo" loading="lazy">
+                        <div class="pet-profile-info">
+                            <h2 id="modalTitle"></h2>
+                            <p class="pet-profile-breed"></p>
+                            <p class="pet-profile-details"></p>
+                            <p class="pet-profile-location"></p>
+                        </div>
+                    </div>
+
+                    <div class="pet-profile-section">
+                        <h3>Vaccination Status</h3>
+                        <div class="vaccination-list"></div>
+                    </div>
+
+                    <div class="pet-profile-section">
+                        <h3>Personality & Behavior</h3>
+                        <div class="personality-traits"></div>
+                    </div>
+
+                    <div class="pet-profile-section">
+                        <h3>About Me</h3>
+                        <p class="pet-biography"></p>
+                    </div>
+
+                    <div class="pet-profile-section">
+                        <h3>Contact Information</h3>
+                        <div class="contact-info">
+                            <div class="contact-detail">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                </svg>
+                                <span class="contact-phone"></span>
+                            </div>
+                            <div class="contact-detail">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect width="20" height="16" x="2" y="4" rx="2"/>
+                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                                </svg>
+                                <span class="contact-email"></span>
+                            </div>
+                            <div class="contact-detail">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                                <span class="contact-time"></span>
+                            </div>
+                            <div class="contact-detail">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                                <span class="contact-location"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+   
