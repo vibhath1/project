@@ -188,6 +188,7 @@ body {
     background-color: #ffffff;
     color: #e11d48;
     border: 2px solid #e11d48;
+    text-decoration: none;
 }
 
 .btn.secondary:hover {
