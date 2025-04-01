@@ -1,20 +1,45 @@
- document.getElementById('signupForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm-password').value;
+document.getElementById('signupForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-            // Basic validation
-            if (password !== confirmPassword) {
-                alert('Passwords do not match');
-                return;
-            }
+    // Get form values
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
 
-            // Here you would typically send the data to a backend service
-            // For this example, we'll just log to console
-            console.log('Signup submitted:', { name, email });
-            alert('Signup successful!');
+    // Basic validation
+    if (password !== confirmPassword) {
+        alert('Passwords do not match');
+        return;
+    }
+
+    // Prepare the data to send
+    const userData = {
+        name: name,
+        email: email,
+        password: password
+    };
+
+    try {
+        // Send the data to the backend
+        const response = await fetch('https://legal-blessed-viper.ngrok-free.app/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
         });
+
+        // Handle the response
+        if (response.ok) {
+            const result = await response.json();
+            alert(result.message); // Show success message
+        } else {
+            const error = await response.json();
+            alert(error.error || 'An error occurred'); // Show error message
+        }
+    } catch (err) {
+        console.error('Error:', err);
+        alert('Failed to connect to the server');
+    }
+});
