@@ -95,24 +95,28 @@ async function handlePetFormSubmit(e) {
     formData.append('image', document.getElementById('pet-image').files[0]);
     formData.append('name', document.getElementById('pet-name').value);
     formData.append('species', document.getElementById('pet-breed').value);
-    // Append other fields...
-
+    formData.append('age', document.getElementById('pet-age').value);
+    formData.append('description', document.getElementById('pet-desc').value);
+    
     try {
-        const response = await fetch('https://legal-blessed-viper.ngrok-free.app/pets', {
+        const response = await fetch('/pets', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
+                // Let browser set Content-Type automatically
             },
             body: formData
         });
 
-        const data = await response.json();
-        if (response.ok) {
-            // Use data.pet.image_url in your frontend
-            console.log('Image URL:', data.pet.image_url);
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Failed to add pet');
         }
+        
+        // Handle success
     } catch (error) {
         console.error('Error:', error);
+        alert(error.message);
     }
 }
 // Handle contact form submission
