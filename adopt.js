@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
             breed: 'Golden Retriever',
             age: '2 years',
             gender: 'Male',
-            location: 'San Francisco, CA',
+            location: 'Kochi, KL',
             image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&q=80',
             vaccinations: [
                 { name: 'Rabies', date: '2023-05-15' },
@@ -26,22 +26,47 @@ document.addEventListener('DOMContentLoaded', function() {
             dislikes: ['Being alone', 'Thunderstorms', 'Vacuum cleaners'],
             biography: 'Max is a loving and energetic Golden Retriever who brings joy to everyone he meets. He\'s well-trained, great with children, and loves outdoor activities. Despite his boundless energy, he\'s also content to cuddle on the couch after a day of play. Max would thrive in an active family that can give him plenty of exercise and attention.',
             contact: {
-                name: 'Golden Gate Animal Shelter',
-                phone: '(555) 123-4567',
-                email: 'adopt@ggashelter.org',
-                hours: '9:00 AM - 5:00 PM',
-                location: '123 Shelter Lane, San Francisco, CA'
+           "name": "Kochi Pet Rescue",
+           "phone": "(555) 876-5432",
+           "email": "adopt@kochirescue.org",
+           "hours": "9:00 AM - 5:00 PM",
+           "location": "78 Rescue Lane, Kochi, KL"
             }
         },
+        2:{
+           "name": "Luna",
+           "breed": "German Shepherd",
+           "age": "1 year",
+           "gender": "Female",
+           "location": "Thiruvananthapuram, KL",
+           "image": "https://images.unsplash.com/photo-1560807707-8cc77767d783?auto=format&fit=crop&q=80",
+           "vaccinations": [
+            { "name": "Rabies", "date": "2024-01-10" },
+            { "name": "DHPP", "date": "2023-12-15" },
+            { "name": "Leptospirosis", "date": "2024-02-05" }
+            ],
+           "traits": ["Loyal", "Protective", "Intelligent", "Trainable", "Energetic"],
+           "likes": ["Running", "Training sessions", "Tug-of-war", "Playing in the park"],
+           "dislikes": ["Loud noises", "Strangers at first", "Being left alone too long"],
+           "biography": "Luna is a smart and devoted German Shepherd who loves to stay active and engaged. She is quick to learn new commands and enjoys playtime with her family. Though initially cautious around strangers, she quickly warms up and becomes affectionate. She would do best in a home that can provide consistent training and plenty of exercise.",
+           "contact": {
+           "name": "Trivandrum Pet Rescue",
+           "phone": "(555) 876-5432",
+           "email": "adopt@trivanrescue.org",
+           "hours": "9:00 AM - 5:00 PM",
+           "location": "78 Rescue Lane,Thiruvananthapuram, KL"
+    }
+}
+
         // Add more pet data as needed
     };
 
     // City options by state
     const cityOptions = {
-        'CA': ['San Francisco', 'Los Angeles', 'San Diego', 'Sacramento'],
-        'NY': ['New York City', 'Buffalo', 'Albany', 'Rochester'],
-        'TX': ['Austin', 'Houston', 'Dallas', 'San Antonio'],
-        'FL': ['Miami', 'Orlando', 'Tampa', 'Jacksonville']
+        'KL': ['San Francisco', 'Los Angeles', 'San Diego', 'Sacramento'],
+        'TN': ['Chennai, Coimbatore, Madurai, Tiruchirappalli, Salem],
+        'KA': ['Bengaluru, Mysuru, Mangaluru, Hubballi, Belagavi'],
+        'MH': ['Mumbai, Pune, Nagpur, Nashik, Aurangabad']
     };
 
     // Update city options when state changes
