@@ -12,56 +12,46 @@ body {
     color: #111827;
 }
 
-/* Navbar */
+/* Navbar Styles */
 .navbar {
-    background-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
     z-index: 50;
 }
-.nav-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Ensures spacing between elements */
-    width: 100%;
-    padding: 10px 20px;
-}
 
-.nav-logo {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.nav-menu {
-    margin-left: auto; /* Pushes it to the right */
-}
-
-.nav-menu a {
-    text-decoration: none;
-    margin-left: 20px; /* Adds spacing between menu items */
-    font-size: 18px;
+.fixed-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
 .nav-content {
     max-width: 1200px;
     margin: 0 auto;
     padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 .nav-logo a {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #0ea5e9;
+    color: #db2777;
     text-decoration: none;
     transition: color 0.2s;
 }
 
 .nav-logo a:hover {
-    color: #0284c7;
+    color: #be185d;
 }
+
 .nav-menu {
     display: flex;
     gap: 2rem;
