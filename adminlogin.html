@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            padding: 40px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4285f4;
+        }
+
+        .error-message {
+            color: #d93025;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .login-button {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 12px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-button:hover {
+            background-color: #3367d6;
+        }
+
+        .login-button:active {
+            background-color: #2a56c6;
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember-me input {
+            margin-right: 5px;
+        }
+
+        .forgot-password a {
+            color: #4285f4;
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .input-error {
+            border-color: #d93025 !important;
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% {transform: translateX(0);}
+            10%, 30%, 50%, 70%, 90% {transform: translateX(-5px);}
+            20%, 40%, 60%, 80% {transform: translateX(5px);}
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Admin Login</h1>
+            <p>Enter your credentials to access the admin panel</p>
+        </div>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email">
+                <div id="emailError" class="error-message">Please enter a valid email address</div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password">
+                <div id="passwordError" class="error-message">Password must be at least 8 characters</div>
+            </div>
+            <div class="remember-forgot">
+                <div class="remember-me">
+                    <input type="checkbox" id="remember" name="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+            </div>
+            <button type="submit" class="login-button">Login</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+
+            // Function to validate email format
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            // Function to show error message
+            function showError(input, errorElement, message) {
+                input.classList.add('input-error');
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                input.classList.add('shake');
+                setTimeout(() => {
+                    input.classList.remove('shake');
+                }, 500);
+            }
+
+            // Function to hide error message
+            function hideError(input, errorElement) {
+                input.classList.remove('input-error');
+                errorElement.style.display = 'none';
+            }
+
+            // Email validation
+            emailInput.addEventListener('blur', function() {
+                if (this.value.trim() === '') {
+                    showError(this, emailError, 'Email is required');
+                } else if (!isValidEmail(this.value)) {
+                    showError(this, emailError, 'Please enter a valid email address');
+                } else {
+                    hideError(this, emailError);
+                }
+            });
+
+            // Password validation
+            passwordInput.addEventListener('blur', function() {
+                if (this.value.trim() === '') {
+                    showError(this, passwordError, 'Password is required');
+                } else if (this.value.length < 8) {
+                    showError(this, passwordError, 'Password must be at least 8 characters');
+                } else {
+                    hideError(this, passwordError);
+                }
+            });
+
+            // Form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                let isValid = true;
+
+                // Validate email
+                if (emailInput.value.trim() === '') {
+                    showError(emailInput, emailError, 'Email is required');
+                    isValid = false;
+                } else if (!isValidEmail(emailInput.value)) {
+                    showError(emailInput, emailError, 'Please enter a valid email address');
+                    isValid = false;
+                }
+
+                // Validate password
+                if (passwordInput.value.trim() === '') {
+                    showError(passwordInput, passwordError, 'Password is required');
+                    isValid = false;
+                } else if (passwordInput.value.length < 8) {
+                    showError(passwordInput, passwordError, 'Password must be at least 8 characters');
+                    isValid = false;
+                }
+
+                // If form is valid, you can submit it
+                if (isValid) {
+                    // In a real scenario, you would send this data to your server
+                    console.log('Form submitted successfully');
+                    alert('Login successful! Redirecting to admin dashboard...');
+                    // Here you would normally redirect to the admin dashboard
+                }
+            });
+
+            // Clear errors when user starts typing
+            emailInput.addEventListener('input', function() {
+                hideError(this, emailError);
+            });
+
+            passwordInput.addEventListener('input', function() {
+                hideError(this, passwordError);
+            });
+        });
+    </script>
+</body>
+</html>
