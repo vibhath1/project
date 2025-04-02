@@ -32,13 +32,13 @@ document.addEventListener('DOMContentLoaded', function() {
            "hours": "9:00 AM - 5:00 PM",
            "location": "78 Rescue Lane, Kochi, KL"
             }
-        },
+        }
         2:{
            "name": "Luna",
            "breed": "German Shepherd",
            "age": "1 year",
            "gender": "Female",
-           "location": "Thiruvananthapuram, KL",
+           "location": "Thrissur, KL",
            "image": "https://images.unsplash.com/photo-1560807707-8cc77767d783?auto=format&fit=crop&q=80",
            "vaccinations": [
             { "name": "Rabies", "date": "2024-01-10" },
@@ -50,13 +50,13 @@ document.addEventListener('DOMContentLoaded', function() {
            "dislikes": ["Loud noises", "Strangers at first", "Being left alone too long"],
            "biography": "Luna is a smart and devoted German Shepherd who loves to stay active and engaged. She is quick to learn new commands and enjoys playtime with her family. Though initially cautious around strangers, she quickly warms up and becomes affectionate. She would do best in a home that can provide consistent training and plenty of exercise.",
            "contact": {
-           "name": "Trivandrum Pet Rescue",
+           "name": "Thrissur Pet Rescue",
            "phone": "(555) 876-5432",
-           "email": "adopt@trivanrescue.org",
+           "email": "adopt@thrissuranrescue.org",
            "hours": "9:00 AM - 5:00 PM",
-           "location": "78 Rescue Lane,Thiruvananthapuram, KL"
+           "location": "78 Rescue Lane,Thrissur, KL"
     }
-}
+},
 
         // Add more pet data as needed
     };
