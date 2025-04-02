@@ -87,73 +87,34 @@ function showSection(sectionId) {
 }
 
 // Handle pet form submission
-function handlePetFormSubmit(e) {
+// In your sell.js
+async function handlePetFormSubmit(e) {
     e.preventDefault();
-    console.log('Pet form submitted'); // Debug log
     
+    const formData = new FormData();
+    formData.append('image', document.getElementById('pet-image').files[0]);
+    formData.append('name', document.getElementById('pet-name').value);
+    formData.append('species', document.getElementById('pet-breed').value);
+    // Append other fields...
+
     try {
-        // Get form values
-        const name = document.getElementById('pet-name').value.trim();
-        const breed = document.getElementById('pet-breed').value.trim();
-        const age = document.getElementById('pet-age').value || 'Unknown';
-        const description = document.getElementById('pet-desc').value.trim() || 'No description provided';
-        const email = document.getElementById('contact-email').value.trim();
-        const phone = document.getElementById('contact-phone').value.trim();
-        const image = imagePreview.querySelector('img')?.src || '';
+        const response = await fetch('https://legal-blessed-viper.ngrok-free.app/pets', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: formData
+        });
 
-        console.log('Form values:', {name, breed, age, email}); // Debug log
-
-        // Basic validation
-        if (!name || !breed || !email) {
-            throw new Error('Please fill in all required fields');
+        const data = await response.json();
+        if (response.ok) {
+            // Use data.pet.image_url in your frontend
+            console.log('Image URL:', data.pet.image_url);
         }
-
-        if (!validateEmail(email)) {
-            throw new Error('Please enter a valid email address');
-        }
-
-        // Create pet object
-        const newPet = {
-            id: Date.now(),
-            name,
-            breed,
-            age,
-            description,
-            email,
-            phone,
-            image,
-            dateAdded: new Date().toLocaleDateString()
-        };
-
-        console.log('New pet object:', newPet); // Debug log
-
-        // Add to pets array
-        pets.push(newPet);
-        
-        // Save to localStorage
-        try {
-            localStorage.setItem('pets', JSON.stringify(pets));
-            console.log('Pet saved to localStorage'); // Debug log
-        } catch (e) {
-            console.error('Error saving to localStorage:', e);
-            throw new Error('Failed to save pet data');
-        }
-        
-        // Reset form
-        petForm.reset();
-        imagePreview.innerHTML = '';
-        
-        // Show success message
-        showAlert('success', 'Pet added successfully!');
-        
-        // Show the pets section
-        showSection('view-pets');
     } catch (error) {
-        console.error('Error in form submission:', error); // Debug log
-        showAlert('error', error.message);
+        console.error('Error:', error);
     }
 }
-
 // Handle contact form submission
 function handleContactFormSubmit(e) {
     e.preventDefault();
