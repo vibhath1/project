@@ -1,0 +1,47 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling & Sticky Footer Setup */
+body {
+    font-family: sans-serif; /* Choose a font you like */
+    display: flex;          /* Enable flexbox */
+    flex-direction: column; /* Stack children vertically */
+    min-height: 100vh;      /* Ensure body takes at least full viewport height */
+    background-color: #f4f4f4; /* Light background for the page */
+    color: #333;            /* Default text color */
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: #ffffff; /* Blue background - adjust as needed */
+    color: rgb(225, 29, 42);
+    padding: 1rem 2rem; /* Vertical and horizontal padding */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    /* display: flex; */ /* Uncomment if adding more items to align */
+    /* align-items: center; */ /* Uncomment if adding more items to align */
+}
+
+.logo {
+    font-size: 1.5rem; /* Larger font size for the logo */
+    font-weight: bold;
+}
+
+/* Main Content Area Styling */
+.content {
+    flex-grow: 1; /* Allows this area to grow and push the footer down */
+    padding: 2rem; /* Add padding around the main content */
+}
+
+/* Footer Styling */
+.site-footer {
+    background-color: #ffffff; /* Dark background for the footer */
+    color: #e91d1d; /* Light grey text color */
+    text-align: center;
+    padding: 1rem 2rem; /* Vertical and horizontal padding */
+    font-size: 0.9rem;
+    margin-top: auto; /* Pushes footer down if content is short (alternative to flex-grow on main) */
+}
