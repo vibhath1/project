@@ -5,7 +5,7 @@ const pets = [
         name: "Buddy",
         type: "dog",
         breed: "Golden Retriever",
-        price: 399,
+        price: 3999,
         age: "8 months",
         gender: "Male",
         images: [
@@ -20,7 +20,7 @@ const pets = [
         name: "Whiskers",
         type: "cat",
         breed: "Siamese",
-        price: 299,
+        price: 2999,
         age: "1 year",
         gender: "Female",
         images: [
@@ -35,7 +35,7 @@ const pets = [
         name: "Tweety",
         type: "bird",
         breed: "Canary",
-        price: 89,
+        price: 4999,
         age: "6 months",
         gender: "Male",
         images: [
@@ -50,7 +50,7 @@ const pets = [
         name: "Fluffy",
         type: "rabbit",
         breed: "Holland Lop",
-        price: 129,
+        price: 3229,
         age: "4 months",
         gender: "Female",
         images: [
@@ -65,7 +65,7 @@ const pets = [
         name: "Max",
         type: "dog",
         breed: "French Bulldog",
-        price: 899,
+        price: 8999,
         age: "10 months",
         gender: "Male",
         images: [
@@ -80,7 +80,7 @@ const pets = [
         name: "Luna",
         type: "cat",
         breed: "Maine Coon",
-        price: 499,
+        price: 4999,
         age: "1.5 years",
         gender: "Female",
         images: [
@@ -127,7 +127,7 @@ function renderPetCards(petsToRender) {
                 <h3 class="pet-name">${pet.name}</h3>
                 <div class="pet-meta">
                     <span class="pet-breed">${pet.breed}</span>
-                    <span class="pet-price">$${pet.price}</span>
+                    <span class="pet-price">₹${pet.price}</span>
                 </div>
             </div>
         `;
@@ -150,7 +150,7 @@ function openPetModal(pet) {
     modalContent.querySelector('.pet-name').textContent = pet.name;
     modalContent.querySelector('.pet-description').textContent = pet.description;
     modalContent.querySelector('.pet-type').textContent = pet.type;
-    modalContent.querySelector('.pet-price').textContent = `$${pet.price}`;
+    modalContent.querySelector('.pet-price').textContent = `₹${pet.price}`;
     
     // Create thumbnails
     const thumbnailContainer = modalContent.querySelector('.thumbnail-container');
@@ -229,7 +229,7 @@ function renderCartItems() {
             <div class="cart-item-details">
                 <h4 class="cart-item-name">${item.name}</h4>
                 <div class="cart-item-meta">
-                    <span class="cart-item-price">$${item.price}</span>
+                    <span class="cart-item-price">₹${item.price}</span>
                     <span class="cart-item-quantity">Qty: ${item.quantity}</span>
                 </div>
             </div>
