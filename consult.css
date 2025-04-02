@@ -22,6 +22,28 @@ body {
     width: 100%;
     z-index: 50;
 }
+.nav-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Ensures spacing between elements */
+    width: 100%;
+    padding: 10px 20px;
+}
+
+.nav-logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-menu {
+    margin-left: auto; /* Pushes it to the right */
+}
+
+.nav-menu a {
+    text-decoration: none;
+    margin-left: 20px; /* Adds spacing between menu items */
+    font-size: 18px;
+}
 
 .nav-content {
     max-width: 1200px;
