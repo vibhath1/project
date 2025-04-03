@@ -27,11 +27,6 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Browse Pets clicked');
     });
 
-    const cartButton = document.querySelector('.cart-button');
-    cartButton.addEventListener('click', function () {
-        console.log('Cart clicked');
-    });
-
     const loginButton = document.querySelector('.login-button');
     loginButton.addEventListener('click', function () {
         console.log('Login clicked');

@@ -31,10 +31,16 @@ document.getElementById('signupForm').addEventListener('submit', async function 
         });
 
         // Handle the response
-        if (response.ok) {
+        if (response.ok) { 
             const result = await response.json();
-            alert(result.message); // Show success message
-        } else {
+            alert(result.message); // Show the alert
+            
+            // Wait for 2000 milliseconds (2 seconds) before redirecting
+            setTimeout(() => {
+                window.location.href = "/index.html";
+            }, 1000);
+        }
+         else {
             const error = await response.json();
             alert(error.error || 'An error occurred'); // Show error message
         }

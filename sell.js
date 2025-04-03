@@ -52,9 +52,15 @@ function showSection(sectionId) {
 async function handlePetFormSubmit(e) {
     e.preventDefault();
 
+    const token = sessionStorage.getItem("authToken");
+    if (!token) {
+        showAlert("error", "Unauthorized! Please log in.");
+        return;
+    }
+
     const petData = {
         name: document.getElementById('pet-name').value,
-        species: document.getElementById('pet-species').value, // Added Species Field
+        species: document.getElementById('pet-species').value,
         breed: document.getElementById('pet-breed').value,
         age: document.getElementById('pet-age').value,
         description: document.getElementById('pet-desc').value,
@@ -66,7 +72,8 @@ async function handlePetFormSubmit(e) {
         const response = await fetch('http://127.0.0.1:5000/pets', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(petData)
         });
@@ -128,16 +135,25 @@ function closeDeleteModal() {
 async function confirmDelete() {
     if (!petToDelete) return;
 
+    const token = sessionStorage.getItem("authToken");
+    if (!token) {
+        showAlert("error", "Unauthorized! Please log in.");
+        return;
+    }
+
     try {
-        const response = await fetch(`/pets/${petToDelete}`, {
-            method: 'DELETE'
+        const response = await fetch(`http://127.0.0.1:5000/pets/${petToDelete}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
         });
 
         if (!response.ok) throw new Error('Failed to delete pet');
 
         showAlert('success', 'Pet removed successfully');
         closeDeleteModal();
-        fetchPets(); // Refresh pets after deletion
+        fetchPets(); 
     } catch (error) {
         showAlert('error', error.message);
     }
