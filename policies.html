@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <header>
+    <h1 style="text-align: left; margin: 0; padding-left: 20px;">
+        <a href="index.html" style="text-decoration: none; color: white;">
+            Paws Connect
+        </a> - Policies
+    </h1>
+</header>
+
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const sections = document.querySelectorAll("section");
+            const links = document.querySelectorAll(".policy-link");
+
+            function showSection(id) {
+                sections.forEach(section => {
+                    section.style.display = section.id === id ? "block" : "none";
+                });
+
+                links.forEach(link => link.classList.remove("active"));
+                document.querySelector(`a[href="#${id}"]`).classList.add("active");
+            }
+
+            links.forEach(link => {
+                link.addEventListener("click", function(event) {
+                    event.preventDefault();
+                    const targetId = this.getAttribute("href").substring(1);
+                    showSection(targetId);
+                });
+            });
+
+            // Show the first section by default
+            showSection("privacy-policy");
+        });
+    </script>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            background: #ff9800;
+            color: white;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        h1, h2 {
+            color: #ff9800;
+        }
+
+        /* Navigation Styles */
+        nav {
+            background: #333;
+            padding: 10px 0;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            display: inline-block;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            background: #ff9800;
+        }
+
+        /* Section Styles */
+        section {
+            display: none;
+            padding: 20px;
+            margin: 20px 0;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: #ff9800;
+            color: white;
+            border-radius: 0 0 10px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="#privacy-policy" class="policy-link active">Privacy Policy</a></li>
+                <li><a href="#refund-policy" class="policy-link">Refund Policy</a></li>
+                <li><a href="#cancellation-policy" class="policy-link">Cancellation Policy</a></li>
+                <li><a href="#terms-conditions" class="policy-link">Terms & Conditions</a></li>
+            </ul>
+        </nav>
+
+        <section id="privacy-policy">
+            <h2>Privacy Policy</h2>
+            <p>At Paws Connect, we prioritize your privacy. This policy outlines how we collect, use, and protect your personal information.</p>
+            <h3>Information We Collect</h3>
+            <ul>
+                <li>Personal details (name, email, phone number) when you register or make a purchase.</li>
+                <li>Payment information for transactions.</li>
+                <li>Browsing data through cookies for website optimization.</li>
+            </ul>
+            <h3>How We Use Your Information</h3>
+            <ul>
+                <li>To provide and improve our services.</li>
+                <li>To process payments and manage transactions.</li>
+                <li>To send updates, offers, and customer support messages.</li>
+            </ul>
+            <h3>Your Rights</h3>
+            <ul>
+                <li>You can request access to or deletion of your data.</li>
+                <li>You can opt out of marketing emails at any time.</li>
+            </ul>
+            <p>For any privacy concerns, contact us at <strong>[Insert Email]</strong>.</p>
+        </section>
+
+        <section id="refund-policy">
+            <h2>Refund Policy</h2>
+            <h3>Eligibility for Refunds</h3>
+            <ul>
+                <li>Refund requests must be made within <strong>[X] days</strong> of purchase.</li>
+                <li>The service must not have been fully rendered.</li>
+                <li>Digital services (such as consultations) are non-refundable once delivered.</li>
+            </ul>
+            <h3>Refund Process</h3>
+            <ol>
+                <li>Submit a refund request via <strong>[Insert Contact Information]</strong>.</li>
+                <li>Our team will review your request within <strong>[X] business days</strong>.</li>
+                <li>Approved refunds will be processed within <strong>[X] days</strong> via the original payment method.</li>
+            </ol>
+        </section>
+
+        <section id="cancellation-policy">
+            <h2>Cancellation Policy</h2>
+            <h3>Service Cancellations</h3>
+            <ul>
+                <li>Cancellations must be made at least <strong>[X] hours/days</strong> before the scheduled service.</li>
+                <li>Late cancellations may incur a fee.</li>
+            </ul>
+            <h3>Product Cancellations</h3>
+            <ul>
+                <li>Orders can be canceled before they are shipped.</li>
+                <li>Once an order has been shipped, it must be returned under our <a href="#refund-policy">Refund Policy</a>.</li>
+            </ul>
+            <p>For cancellations, contact us at <strong>[Insert Contact Information]</strong>.</p>
+        </section>
+
+        <section id="terms-conditions">
+            <h2>Terms & Conditions</h2>
+            <h3>1. Acceptance of Terms</h3>
+            <p>By using Paws Connect, you agree to these Terms & Conditions.</p>
+            <h3>2. Services Provided</h3>
+            <p>We offer pet adoption, grooming, boarding, and consultation services.</p>
+            <h3>3. User Responsibilities</h3>
+            <ul>
+                <li>You must provide accurate information when registering or making a purchase.</li>
+                <li>You agree not to misuse or distribute content from this website without permission.</li>
+            </ul>
+            <h3>4. Limitation of Liability</h3>
+            <ul>
+                <li>Paws Connect is not responsible for the behavior of adopted pets after adoption.</li>
+                <li>We are not liable for any personal injuries caused by pets obtained through our platform.</li>
+            </ul>
+            <h3>5. Changes to Terms</h3>
+            <p>We reserve the right to modify these terms. Updates will be posted on this page.</p>
+            <p>For questions, contact <strong>[Insert Contact Information]</strong>.</p>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 Paws Connect. All rights reserved.</p>
+        </footer>
+    </div>
+    </div>
+</body>
+</html>

@@ -36,8 +36,8 @@
                 </select>
             </div>
             <div class="filter-group">
-                <label for="price-range">Max Price: ₹<span id="price-value">1000</span></label>
-                <input type="range" id="price-range" class="filter" min="50" max="1000" value="1000" oninput="updatePriceDisplay(this.value)">
+              <label for="price-range">Max Price: ₹<span id="price-value">8999</span></label>
+              <input type="range" id="price-range" class="filter" min="2999" max="8999" value="8999" step="500" oninput="updatePriceDisplay(this.value); applyFilters();">
             </div>
         </section>
 
