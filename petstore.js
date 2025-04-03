@@ -286,8 +286,9 @@ function applyFilters() {
 
 // Update price display
 function updatePriceDisplay(value) {
-    priceValueDisplay.textContent = value;
+    priceValueDisplay.textContent = `₹${value}`;
 }
+
 
 // Show notification
 function showNotification(message) {
