@@ -12,8 +12,7 @@
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 28rem;
+            min-width: 400px;
             padding: 30px;
             box-sizing: border-box;
         }
@@ -84,4 +83,37 @@
 
         .login-link a:hover {
             text-decoration: underline;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            z-index: 50;
+        }
+        
+        .fixed-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-logo a {
+            color: #e11d48;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .nav-logo a:hover {
+            color: #be123c;
         }

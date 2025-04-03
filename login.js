@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
   
       try {
         const response = await fetch(
-          "https://legal-blessed-viper.ngrok-free.app/login",
+          "http://127.0.0.1:5000/login",
           {
             method: "POST",
             headers: {
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const data = await response.json();
   
         if (response.ok) {
-          window.location.href = "/project/index.html";
+          window.location.href = "/index.html";
         } else {
           throw new Error(data.message || "Invalid credentials");
         }

@@ -3,217 +3,113 @@ const navButtons = document.querySelectorAll('.nav-btn');
 const sections = document.querySelectorAll('.section');
 const petForm = document.getElementById('pet-form');
 const petList = document.getElementById('pet-list');
-const contactForm = document.getElementById('contact-form');
 const deleteModal = document.getElementById('delete-modal');
 const confirmDeleteBtn = document.getElementById('confirm-delete');
 const cancelDeleteBtn = document.getElementById('cancel-delete');
 const alertToast = document.getElementById('alert-toast');
 const alertMessage = document.getElementById('alert-message');
-const imagePreview = document.getElementById('image-preview');
-const petImageInput = document.getElementById('pet-image');
 
 // State
-let pets = JSON.parse(localStorage.getItem('pets')) || [];
+let pets = [];
 let petToDelete = null;
 
 // Initialize the app
 function init() {
-    // Set up event listeners
     setupEventListeners();
-    
-    // Show the first section by default
     showSection('add-pet');
-    
-    // Load pets if any exist
-    if (pets.length > 0) {
-        renderPets();
-    }
+    fetchPets();  // Load pets from database
 }
 
-// Set up all event listeners
+// Set up event listeners
 function setupEventListeners() {
-    // Navigation buttons
     navButtons.forEach(button => {
         button.addEventListener('click', () => {
-            const sectionId = button.getAttribute('data-section');
-            showSection(sectionId);
+            showSection(button.getAttribute('data-section'));
         });
     });
 
-    // Pet form submission
     petForm.addEventListener('submit', handlePetFormSubmit);
-
-    // Contact form submission
-    contactForm.addEventListener('submit', handleContactFormSubmit);
-
-    // Image preview
-    petImageInput.addEventListener('change', handleImageUpload);
-
-    // Delete modal buttons
     confirmDeleteBtn.addEventListener('click', confirmDelete);
     cancelDeleteBtn.addEventListener('click', closeDeleteModal);
 }
 
 // Show a specific section
 function showSection(sectionId) {
-    console.log(`Showing section: ${sectionId}`); // Debug log
-    
-    // Update active nav button
     navButtons.forEach(button => {
-        const btnSection = button.getAttribute('data-section');
-        if (btnSection === sectionId) {
-            button.classList.add('active');
-        } else {
-            button.classList.remove('active');
-        }
+        button.classList.toggle('active', button.getAttribute('data-section') === sectionId);
     });
 
-    // Show the selected section
     sections.forEach(section => {
-        const sectionName = section.id.replace('-section', '');
-        if (sectionName === sectionId) {
-            section.classList.add('active-section');
-            console.log(`Showing: ${section.id}`); // Debug log
-        } else {
-            section.classList.remove('active-section');
-        }
+        section.classList.toggle('active-section', section.id === `${sectionId}`);
     });
 
-    // If showing pets section, refresh the list
     if (sectionId === 'view-pets') {
-        console.log('Refreshing pet list'); // Debug log
-        renderPets();
+        fetchPets(); // Reload pets when viewing
     }
 }
 
-// Handle pet form submission
-// In your sell.js
+// Handle pet form submission (Add Pet)
 async function handlePetFormSubmit(e) {
     e.preventDefault();
-    
-    const formData = new FormData();
-    formData.append('image', document.getElementById('pet-image').files[0]);
-    formData.append('name', document.getElementById('pet-name').value);
-    formData.append('species', document.getElementById('pet-breed').value);
-    formData.append('age', document.getElementById('pet-age').value);
-    formData.append('description', document.getElementById('pet-desc').value);
-    
+
+    const petData = {
+        name: document.getElementById('pet-name').value,
+        species: document.getElementById('pet-species').value, // Added Species Field
+        breed: document.getElementById('pet-breed').value,
+        age: document.getElementById('pet-age').value,
+        description: document.getElementById('pet-desc').value,
+        contact_email: document.getElementById('contact-email').value,
+        contact_phone: document.getElementById('contact-phone').value
+    };
+
     try {
-        const response = await fetch('/pets', {
+        const response = await fetch('http://127.0.0.1:5000/pets', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-                // Let browser set Content-Type automatically
+                'Content-Type': 'application/json'
             },
-            body: formData
+            body: JSON.stringify(petData)
         });
 
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error || 'Failed to add pet');
-        }
-        
-        // Handle success
+        if (!response.ok) throw new Error('Failed to add pet');
+
+        showAlert('success', 'Pet added successfully!');
+        petForm.reset();
+        fetchPets(); // Reload pet list after adding
     } catch (error) {
-        console.error('Error:', error);
-        alert(error.message);
+        showAlert('error', error.message);
     }
 }
-// Handle contact form submission
-function handleContactFormSubmit(e) {
-    e.preventDefault();
-    
-    // Get form values
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const message = document.getElementById('message').value.trim();
 
-    // Validation
-    if (!name || !email || !message) {
-        showAlert('error', 'Please fill in all fields');
-        return;
+// Fetch pets from backend (NO TOKEN REQUIRED)
+async function fetchPets() {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/pets', { method: 'GET' });
+
+        if (!response.ok) throw new Error('Failed to fetch pets');
+
+        pets = await response.json();
+        renderPets();
+    } catch (error) {
+        showAlert('error', error.message);
     }
-
-    if (!validateEmail(email)) {
-        showAlert('error', 'Please enter a valid email address');
-        return;
-    }
-
-    // In a real app, you would send this data to a server
-    console.log('Contact form submitted:', { name, email, message });
-    
-    // Reset form
-    contactForm.reset();
-    
-    // Show success message
-    showAlert('success', 'Message sent successfully!');
 }
 
-// Handle image upload and preview
-function handleImageUpload(e) {
-    const file = e.target.files[0];
-    
-    if (!file) return;
-    
-    // Check file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-        showAlert('error', 'Image size must be less than 5MB');
-        e.target.value = '';
-        return;
-    }
-
-    // Check file type
-    if (!file.type.match('image.*')) {
-        showAlert('error', 'Please select an image file');
-        e.target.value = '';
-        return;
-    }
-
-    // Create preview
-    const reader = new FileReader();
-    reader.onload = (event) => {
-        imagePreview.innerHTML = '';
-        const img = document.createElement('img');
-        img.src = event.target.result;
-        imagePreview.appendChild(img);
-    };
-    reader.readAsDataURL(file);
-}
-
-// Render all pets to the list
+// Render pets
 function renderPets() {
-    if (pets.length === 0) {
-        petList.innerHTML = `
-            <div class="empty-state">
-                <i class="fas fa-paw"></i>
-                <p>No pets available yet. Add your first pet!</p>
+    petList.innerHTML = pets.length
+        ? pets.map(pet => `
+            <div class="pet-card" data-id="${pet.id}">
+                <h3>${pet.name}</h3>
+                <p>Species: ${pet.species}</p>
+                <p>Breed: ${pet.breed}</p>
+                <p>Age: ${pet.age} years</p>
+                <p>${pet.description || 'No description'}</p>
+                <p>Contact: ${pet.contact_email} ${pet.contact_phone ? `| ${pet.contact_phone}` : ''}</p>
+                <button class="delete-btn" onclick="openDeleteModal(${pet.id})">Delete</button>
             </div>
-        `;
-        return;
-    }
-
-    petList.innerHTML = pets.map(pet => `
-        <div class="pet-card" data-id="${pet.id}">
-            <div class="pet-image-container">
-                <img src="${pet.image || 'https://images.pexels.com/photos/3761509/pexels-photo-3761509.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'}" 
-                     alt="${pet.name}" class="pet-image">
-            </div>
-            <div class="pet-details">
-                <h3 class="pet-name">${pet.name}</h3>
-                <p class="pet-breed">${pet.breed}</p>
-                <p class="pet-age">${pet.age} years old</p>
-                <p class="pet-description">${pet.description}</p>
-                <div class="pet-actions">
-                    <button class="action-btn contact-btn" onclick="contactSeller(${pet.id})">
-                        <i class="fas fa-envelope"></i> Contact
-                    </button>
-                    <button class="action-btn delete-btn" onclick="openDeleteModal(${pet.id})">
-                        <i class="fas fa-trash"></i> Delete
-                    </button>
-                </div>
-            </div>
-        </div>
-    `).join('');
+        `).join('')
+        : `<p>No pets available.</p>`;
 }
 
 // Open delete confirmation modal
@@ -229,60 +125,34 @@ function closeDeleteModal() {
 }
 
 // Confirm pet deletion
-function confirmDelete() {
+async function confirmDelete() {
     if (!petToDelete) return;
-    
-    // Remove pet from array
-    pets = pets.filter(pet => pet.id !== petToDelete);
-    
-    // Update localStorage
-    localStorage.setItem('pets', JSON.stringify(pets));
-    
-    // Re-render pets
-    renderPets();
-    
-    // Close modal
-    closeDeleteModal();
-    
-    // Show success message
-    showAlert('success', 'Pet removed successfully');
+
+    try {
+        const response = await fetch(`/pets/${petToDelete}`, {
+            method: 'DELETE'
+        });
+
+        if (!response.ok) throw new Error('Failed to delete pet');
+
+        showAlert('success', 'Pet removed successfully');
+        closeDeleteModal();
+        fetchPets(); // Refresh pets after deletion
+    } catch (error) {
+        showAlert('error', error.message);
+    }
 }
 
-// Contact seller - pre-fills contact form
-function contactSeller(petId) {
-    const pet = pets.find(p => p.id === petId);
-    if (!pet) return;
-    
-    // Pre-fill contact form
-    document.getElementById('name').value = '';
-    document.getElementById('email').value = pet.email;
-    document.getElementById('message').value = `Hi, I'm interested in ${pet.name} the ${pet.breed}.`;
-    
-    // Show contact section
-    showSection('contact');
-}
-
-// Show alert/toast message
+// Show alert message
 function showAlert(type, message) {
     alertMessage.textContent = message;
     alertToast.className = `toast ${type}`;
-    
-    // Auto-hide after 3 seconds
-    setTimeout(() => {
-        alertToast.className = 'toast hidden';
-    }, 3000);
+    setTimeout(() => alertToast.className = 'toast hidden', 3000);
 }
 
-// Validate email format
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
-
-// Initialize the app when DOM is loaded
+// Initialize on DOM load
 document.addEventListener('DOMContentLoaded', init);
 
-// Make functions available globally for HTML onclick attributes
+// Expose functions globally for HTML onclick attributes
 window.showSection = showSection;
-window.contactSeller = contactSeller;
 window.openDeleteModal = openDeleteModal;
