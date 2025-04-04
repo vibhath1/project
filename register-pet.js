@@ -1,229 +1,206 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('petRegistrationForm');
-    const petTypeInputs = document.getElementsByName('petType');
-    const breedSelect = document.getElementById('petBreed');
-    const aggressionSlider = document.getElementById('aggressionLevel');
-    const aggressionValue = document.getElementById('aggressionValue');
-    const submitButton = document.getElementById('submitButton');
-    const modal = document.getElementById('confirmationModal');
-    const closeModalButton = document.querySelector('.close-modal');
-    const petDetailsContent = document.getElementById('petDetailsContent');
-    const vaccinationGroup = document.getElementById('vaccinationGroup');
+// DOM Elements
+        const registerViewBtn = document.getElementById('registerViewBtn');
+        const myPetsViewBtn = document.getElementById('myPetsViewBtn');
+        const howItWorksBtn = document.getElementById('howItWorksBtn');
+        const contactBtn = document.getElementById('contactBtn');
 
-    // Breed lists
-    const breeds = {
-        dog: [
-            'Labrador Retriever', 'German Shepherd', 'Golden Retriever',
-            'French Bulldog', 'Bulldog', 'Poodle', 'Beagle',
-            'Rottweiler', 'Dachshund', 'Yorkshire Terrier'
-        ],
-        cat: [
-            'Persian', 'Maine Coon', 'Siamese', 'British Shorthair',
-            'Ragdoll', 'Bengal', 'Abyssinian', 'American Shorthair',
-            'Scottish Fold', 'Sphynx'
-        ]
-    };
+        const registerSection = document.getElementById('registerSection');
+        const myPetsSection = document.getElementById('myPetsSection');
+        const petListContainer = document.getElementById('petList');
+        const noPetsMessage = document.getElementById('noPetsMessage');
 
-    // Vaccination lists
-    const vaccinations = {
-        dog: [
-            'Rabies',
-            'Distemper',
-            'Parvovirus',
-            'Hepatitis',
-            'Bordetella'
-        ],
-        cat: [
-            'Rabies',
-            'Feline Distemper',
-            'Feline Calicivirus',
-            'Feline Herpesvirus',
-            'Feline Leukemia'
-        ]
-    };
+        const petForm = document.getElementById('petForm');
+        const petNameInput = document.getElementById('petName');
+        const petSpeciesInput = document.getElementById('petSpecies');
+        const petBreedInput = document.getElementById('petBreed');
+        const petAgeInput = document.getElementById('petAge');
+        const vaccinationStatusInput = document.getElementById('vaccinationStatus');
+        const aggressionLevelInput = document.getElementById('aggressionLevel');
+        const petImageInput = document.getElementById('petImage');
+        const uploadStatus = document.getElementById('uploadStatus');
+        const fileInputLabel = document.querySelector('.file-input-label');
 
-    // Update breeds based on pet type
-    function updateBreeds(petType) {
-        breedSelect.innerHTML = '<option value="">Select breed</option>';
-        breeds[petType].forEach(breed => {
-            const option = document.createElement('option');
-            option.value = breed.toLowerCase().replace(/\s+/g, '-');
-            option.textContent = breed;
-            breedSelect.appendChild(option);
+        // Data Store
+        let registeredPets = [];
+
+        // --- Functions ---
+
+        function setActiveView(viewToShow) {
+            registerSection.classList.remove('active');
+            myPetsSection.classList.remove('active');
+            registerViewBtn.classList.remove('active');
+            myPetsViewBtn.classList.remove('active');
+
+            // Ensure sections reset animation properties for re-entry
+            registerSection.style.animation = 'none';
+            myPetsSection.style.animation = 'none';
+            // Trigger reflow to reset animation
+            registerSection.offsetHeight;
+            myPetsSection.offsetHeight;
+            registerSection.style.animation = '';
+            myPetsSection.style.animation = '';
+
+
+            if (viewToShow === 'register') {
+                registerSection.classList.add('active');
+                registerViewBtn.classList.add('active');
+            } else if (viewToShow === 'myPets') {
+                displayPets();
+                myPetsSection.classList.add('active');
+                myPetsViewBtn.classList.add('active');
+            }
+        }
+
+        function displayPets() {
+            petListContainer.innerHTML = '';
+
+            if (registeredPets.length === 0) {
+                noPetsMessage.style.display = 'block';
+            } else {
+                noPetsMessage.style.display = 'none';
+                registeredPets.forEach((pet, index) => {
+                    const petItem = document.createElement('div');
+                    petItem.classList.add('pet-item');
+                    petItem.setAttribute('data-id', pet.id);
+
+                    const imageName = pet.imageName ? (pet.imageName.length > 20 ? pet.imageName.substring(0, 17) + '...' : pet.imageName) : 'No image';
+
+                    petItem.innerHTML = `
+                        <div class="pet-details">
+                            <span><strong>Name:</strong> ${pet.name}</span>
+                            <span><strong>Species:</strong> ${pet.species}</span>
+                            <span><strong>Breed:</strong> ${pet.breed}</span>
+                            <span><strong>Age:</strong> ${pet.age} years</span>
+                            <span><strong>Vaccinated:</strong> ${pet.vaccination}</span>
+                            <span><strong>Aggression:</strong> ${pet.aggression}</span>
+                            <span><strong>Image:</strong> ${imageName}</span>
+                        </div>
+                        <button class="delete-pet-btn">Delete</button>
+                    `;
+                     petItem.style.animationDelay = `${index * 0.08}s`; // Slightly faster stagger
+
+                    petListContainer.appendChild(petItem);
+                });
+            }
+        }
+
+        function deletePet(petId) {
+             const petIndex = registeredPets.findIndex(pet => pet.id === petId);
+             if (petIndex > -1) {
+                 // Add a class to trigger removal animation (optional)
+                 const itemToRemove = petListContainer.querySelector(`.pet-item[data-id="${petId}"]`);
+                 if (itemToRemove) {
+                    // Example: fade out before removing
+                    itemToRemove.style.transition = 'opacity 0.3s ease-out';
+                    itemToRemove.style.opacity = '0';
+                    // Wait for animation to finish before removing from array and DOM
+                    setTimeout(() => {
+                        registeredPets.splice(petIndex, 1);
+                        displayPets(); // Re-render the list (or just remove the item directly)
+                    }, 300); // Match timeout to transition duration
+                 } else {
+                     // Fallback if animation fails
+                     registeredPets.splice(petIndex, 1);
+                     displayPets();
+                 }
+
+            } else {
+                console.error("Could not find pet with ID:", petId);
+            }
+            // updateLocalStorage(); // Update if using localStorage
+        }
+
+        // function updateLocalStorage() {
+        //    localStorage.setItem('registeredPets', JSON.stringify(registeredPets));
+        // }
+
+        // function loadFromLocalStorage() {
+        //     const storedPets = localStorage.getItem('registeredPets');
+        //     if (storedPets) {
+        //         registeredPets = JSON.parse(storedPets);
+        //     }
+        // }
+
+
+        // --- Event Listeners ---
+
+        registerViewBtn.addEventListener('click', () => setActiveView('register'));
+        myPetsViewBtn.addEventListener('click', () => setActiveView('myPets'));
+
+        howItWorksBtn.addEventListener('click', () => {
+            alert("How It Works:\n1. Register your pet with its details.\n2. Browse potential matches (feature coming soon!).\n3. Connect safely with other pet owners.\n4. View and manage your registered pets in 'My Pets'.");
         });
-    }
 
-    // Update vaccinations based on pet type
-    function updateVaccinations(petType) {
-        vaccinationGroup.innerHTML = '';
-        vaccinations[petType].forEach(vaccination => {
-            const wrapper = document.createElement('label');
-            wrapper.className = 'checkbox-wrapper';
-            
-            const input = document.createElement('input');
-            input.type = 'checkbox';
-            input.name = 'vaccinations';
-            input.value = vaccination.toLowerCase().replace(/\s+/g, '-');
-            
-            const span = document.createElement('span');
-            span.className = 'checkbox-label';
-            span.textContent = vaccination;
-            
-            wrapper.appendChild(input);
-            wrapper.appendChild(span);
-            vaccinationGroup.appendChild(wrapper);
+        contactBtn.addEventListener('click', () => {
+            alert("Contact Us:\nEmail: support@pawsconnect.example.com\nPhone: 123-456-7890 (Example)"); // Updated email
         });
-    }
 
-    // Initialize breeds and vaccinations
-    updateBreeds('dog');
-    updateVaccinations('dog');
-
-    // Update breeds and vaccinations when pet type changes
-    petTypeInputs.forEach(input => {
-        input.addEventListener('change', function() {
-            updateBreeds(this.value);
-            updateVaccinations(this.value);
+        petImageInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                const fileName = this.files[0].name;
+                uploadStatus.innerText = `Selected: ${fileName.length > 30 ? fileName.substring(0, 27) + '...' : fileName}`; // Truncate long names
+                uploadStatus.style.color = 'var(--success-color)';
+                fileInputLabel.textContent = 'Change Image';
+            } else {
+                uploadStatus.innerText = '';
+                fileInputLabel.textContent = 'Choose Image';
+            }
         });
-    });
 
-    // Update aggression slider value
-    aggressionSlider.addEventListener('input', function() {
-        aggressionValue.textContent = this.value;
-    });
+        petForm.addEventListener('submit', function(event) {
+            event.preventDefault();
 
-    // Form validation
-    function validateForm() {
-        let isValid = true;
-        const errors = {};
+            const petName = petNameInput.value.trim();
+            const petSpecies = petSpeciesInput.value;
+            const petBreed = petBreedInput.value.trim();
+            const petAge = petAgeInput.value;
+            const vaccinationStatus = vaccinationStatusInput.value;
+            const aggressionLevel = aggressionLevelInput.value;
+            const petImageFile = petImageInput.files[0];
 
-        // Pet name validation
-        const petName = form.petName.value.trim();
-        if (!petName) {
-            errors.petName = 'Pet name is required';
-            isValid = false;
-        } else if (petName.length < 2) {
-            errors.petName = 'Pet name must be at least 2 characters long';
-            isValid = false;
-        }
+            if (petName && petSpecies && petBreed && petAge && vaccinationStatus && aggressionLevel) {
+                 const newPetId = Date.now();
+                 const newPet = {
+                    id: newPetId,
+                    name: petName,
+                    species: petSpecies,
+                    breed: petBreed,
+                    age: petAge,
+                    vaccination: vaccinationStatus,
+                    aggression: aggressionLevel,
+                    imageName: petImageFile ? petImageFile.name : null
+                };
+                registeredPets.push(newPet);
+                // updateLocalStorage(); // Update if using localStorage
 
-        // Breed validation
-        if (!form.petBreed.value) {
-            errors.petBreed = 'Please select a breed';
-            isValid = false;
-        }
+                alert(`${petName} registered successfully!`);
+                petForm.reset();
+                uploadStatus.innerText = '';
+                fileInputLabel.textContent = 'Choose Image';
+                setActiveView('myPets');
+            } else {
+                alert("Please fill in all required fields.");
+            }
+        });
 
-        // Age validation
-        const age = parseFloat(form.petAge.value);
-        if (isNaN(age) || age < 0.5 || age > 20) {
-            errors.petAge = 'Please enter a valid age between 0.5 and 20 years';
-            isValid = false;
-        }
-
-        // Vaccination validation
-        const vaccinations = form.querySelectorAll('input[name="vaccinations"]:checked');
-        if (vaccinations.length === 0) {
-            errors.vaccinations = 'Please select at least one vaccination';
-            isValid = false;
-        }
-
-        // Display errors
-        Object.keys(errors).forEach(field => {
-            const errorElement = document.querySelector(`[data-error="${field}"]`);
-            if (errorElement) {
-                errorElement.textContent = errors[field];
-                const input = form.querySelector(`[name="${field}"]`);
-                if (input) {
-                    input.classList.add('error');
+        petListContainer.addEventListener('click', function(event) {
+            if (event.target.classList.contains('delete-pet-btn')) {
+                const petItem = event.target.closest('.pet-item');
+                if (petItem) {
+                    const petId = parseInt(petItem.getAttribute('data-id'), 10);
+                     if (!isNaN(petId)) {
+                         if (confirm("Are you sure you want to delete this pet?")) {
+                            deletePet(petId);
+                         }
+                    } else {
+                         console.error("Invalid Pet ID found on element:", petItem);
+                    }
                 }
             }
         });
 
-        return isValid;
-    }
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-    // Clear errors when input changes
-    form.querySelectorAll('input, select').forEach(input => {
-        input.addEventListener('input', function() {
-            this.classList.remove('error');
-            const errorElement = document.querySelector(`[data-error="${this.name}"]`);
-            if (errorElement) {
-                errorElement.textContent = '';
-            }
-        });
-    });
-
-    // Form submission
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        if (!validateForm()) {
-            return;
-        }
-
-        // Show loading state
-        submitButton.disabled = true;
-        submitButton.querySelector('.button-text').classList.add('hidden');
-        submitButton.querySelector('.button-loader').classList.remove('hidden');
-
-        try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
-            // Get selected vaccinations
-            const selectedVaccinations = Array.from(form.querySelectorAll('input[name="vaccinations"]:checked'))
-                .map(input => input.nextElementSibling.textContent);
-
-            // Create pet details HTML
-            const petDetails = `
-                <div class="pet-details-grid">
-                    <p><strong>Name:</strong> ${form.petName.value}</p>
-                    <p><strong>Type:</strong> ${form.petType.value}</p>
-                    <p><strong>Breed:</strong> ${breedSelect.options[breedSelect.selectedIndex].text}</p>
-                    <p><strong>Age:</strong> ${form.petAge.value} years</p>
-                    <p><strong>Gender:</strong> ${form.petGender.value}</p>
-                    <p><strong>Aggression Level:</strong> ${form.aggressionLevel.value}/10</p>
-                    <p><strong>Vaccinations:</strong> ${selectedVaccinations.join(', ')}</p>
-                </div>
-            `;
-
-            // Update and show modal
-            petDetailsContent.innerHTML = petDetails;
-            modal.classList.add('active');
-
-            // Reset form
-            form.reset();
-            updateBreeds('dog');
-            updateVaccinations('dog');
-            aggressionValue.textContent = '5';
-
-        } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
-        } finally {
-            // Reset button state
-            submitButton.disabled = false;
-            submitButton.querySelector('.button-text').classList.remove('hidden');
-            submitButton.querySelector('.button-loader').classList.add('hidden');
-        }
-    });
-
-    // Close modal
-    closeModalButton.addEventListener('click', function() {
-        modal.classList.remove('active');
-    });
-
-    // Close modal when clicking outside
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            modal.classList.remove('active');
-        }
-    });
-
-    // Handle "Escape" key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.classList.contains('active')) {
-            modal.classList.remove('active');
-        }
-    });
-});
+        // --- Initial Setup ---
+        // loadFromLocalStorage(); // Load if using localStorage
+        setActiveView('register');
