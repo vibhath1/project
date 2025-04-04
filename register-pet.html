@@ -3,180 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet Mating Registration - Paws Connect</title>
+    <title>Pet Harmony - Find a Match!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="register-pet.css">
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar fixed-navbar">
-        <div class="nav-content">
-            <div class="nav-logo">
-                <a href="index.html">Paws Connect</a>
-            </div>
-        </div>
-    </nav>
+    <header>
+        <div class="nav-logo">
+            <a href="index.html">Paws Connect</a> </div>
+        <nav>
+            <button id="registerViewBtn" class="active">Register Pet</button>
+            <button id="myPetsViewBtn">My Pets</button>
+            <button id="howItWorksBtn">How It Works</button>
+            <button id="contactBtn">Contact</button>
+        </nav>
+    </header>
 
-    <main class="registration-container">
-        <div class="form-card">
-            <h1>Register Your Pet for Mating</h1>
-            <p class="subtitle">Find the perfect match for your beloved pet</p>
-
-            <form id="petRegistrationForm" class="registration-form" novalidate>
-                <!-- Pet Name -->
+    <main>
+        <section id="registerSection" class="content-section active">
+            <h2>Register Your Pet</h2>
+            <form id="petForm">
                 <div class="form-group">
-                    <label for="petName">Pet Name</label>
-                    <div class="input-wrapper">
-                        <input 
-                            type="text" 
-                            id="petName" 
-                            name="petName" 
-                            required
-                            minlength="2"
-                            maxlength="50"
-                        >
-                    </div>
-                    <span class="error-message" data-error="petName"></span>
+                    <label for="petName">Pet Name:</label>
+                    <input type="text" id="petName" required>
                 </div>
 
-                <!-- Pet Type -->
                 <div class="form-group">
-                    <label>Pet Type</label>
-                    <div class="radio-group">
-                        <label class="radio-wrapper">
-                            <input 
-                                type="radio" 
-                                name="petType" 
-                                value="dog" 
-                                required
-                                checked
-                            >
-                            <span class="radio-label">Dog</span>
-                        </label>
-                        <label class="radio-wrapper">
-                            <input 
-                                type="radio" 
-                                name="petType" 
-                                value="cat"
-                                required
-                            >
-                            <span class="radio-label">Cat</span>
-                        </label>
-                    </div>
-                    <span class="error-message" data-error="petType"></span>
-                </div>
-
-                <!-- Pet Breed -->
-                <div class="form-group">
-                    <label for="petBreed">Pet Breed</label>
-                    <select 
-                        id="petBreed" 
-                        name="petBreed" 
-                        required
-                    >
-                        <option value="">Select breed</option>
+                    <label for="petSpecies">Species:</label>
+                    <select id="petSpecies" required>
+                        <option value="" disabled selected>Select Species</option>
+                        <option value="Dog">Dog</option>
+                        <option value="Cat">Cat</option>
+                        <option value="Bird">Bird</option>
+                        <option value="Rabbit">Rabbit</option>
+                        <option value="Hamster">Hamster</option>
+                        <option value="Other">Other</option>
                     </select>
-                    <span class="error-message" data-error="petBreed"></span>
                 </div>
 
-                <!-- Pet Age -->
                 <div class="form-group">
-                    <label for="petAge">Pet Age (years)</label>
-                    <div class="input-wrapper">
-                        <input 
-                            type="number" 
-                            id="petAge" 
-                            name="petAge" 
-                            required
-                            min="0.5"
-                            max="20"
-                            step="0.5"
-                        >
-                    </div>
-                    <span class="error-message" data-error="petAge"></span>
+                    <label for="petBreed">Breed:</label>
+                    <input type="text" id="petBreed" required>
                 </div>
 
-                <!-- Pet Gender -->
                 <div class="form-group">
-                    <label>Pet Gender</label>
-                    <div class="radio-group">
-                        <label class="radio-wrapper">
-                            <input 
-                                type="radio" 
-                                name="petGender" 
-                                value="male" 
-                                required
-                                checked
-                            >
-                            <span class="radio-label">Male</span>
-                        </label>
-                        <label class="radio-wrapper">
-                            <input 
-                                type="radio" 
-                                name="petGender" 
-                                value="female"
-                                required
-                            >
-                            <span class="radio-label">Female</span>
-                        </label>
-                    </div>
-                    <span class="error-message" data-error="petGender"></span>
+                    <label for="petAge">Age (years):</label>
+                    <input type="number" id="petAge" min="0" required>
                 </div>
 
-                <!-- Vaccination Status -->
+                 <div class="form-group">
+                    <label for="vaccinationStatus">Vaccination Status:</label>
+                    <select id="vaccinationStatus" required>
+                        <option value="" disabled selected>Select Status</option>
+                        <option value="Fully Vaccinated">Fully Vaccinated</option>
+                        <option value="Partially Vaccinated">Partially Vaccinated</option>
+                        <option value="Not Vaccinated">Not Vaccinated</option>
+                    </select>
+                </div>
+
+                 <div class="form-group">
+                    <label for="aggressionLevel">Aggression Level:</label>
+                    <select id="aggressionLevel" required>
+                        <option value="" disabled selected>Select Level</option>
+                        <option value="Low">Low (Friendly with all)</option>
+                        <option value="Medium">Medium (Cautious initially)</option>
+                        <option value="High">High (Prefers to be alone/reactive)</option>
+                    </select>
+                </div>
+
                 <div class="form-group">
-                    <label>Vaccination Status</label>
-                    <div class="checkbox-group" id="vaccinationGroup">
-                        <!-- Dynamically populated based on pet type -->
-                    </div>
-                    <span class="error-message" data-error="vaccinations"></span>
+                    <label>Upload Pet Image:</label>
+                    <div class="file-input-wrapper">
+                        <label for="petImage" class="file-input-label">Choose Image</label>
+                        <input type="file" id="petImage" accept="image/*">
+                     </div>
+                    <p id="uploadStatus"></p>
                 </div>
 
-                <!-- Aggression Level -->
-                <div class="form-group">
-                    <label for="aggressionLevel">
-                        Aggression Level
-                        <span class="slider-value" id="aggressionValue">5</span>
-                    </label>
-                    <input 
-                        type="range" 
-                        id="aggressionLevel" 
-                        name="aggressionLevel" 
-                        min="1" 
-                        max="10" 
-                        value="5"
-                        class="slider"
-                    >
-                    <div class="slider-labels">
-                        <span>Very Gentle</span>
-                        <span>Moderate</span>
-                        <span>Aggressive</span>
-                    </div>
-                </div>
-
-                <button 
-                    type="submit" 
-                    class="submit-button" 
-                    id="submitButton"
-                >
-                    <span class="button-text">Register Pet</span>
-                    <div class="button-loader hidden"></div>
-                </button>
+                <button type="submit">Register Pet</button>
             </form>
-        </div>
+        </section>
+
+        <section id="myPetsSection" class="content-section">
+            <h2>My Registered Pets</h2>
+            <div id="petList">
+                </div>
+            <p id="noPetsMessage" style="display: none;">You have not registered any pets yet.</p>
+        </section>
+
     </main>
 
-    <!-- Confirmation Modal -->
-    <div class="modal" id="confirmationModal">
-        <div class="modal-content">
-            <h2>Registration Successful!</h2>
-            <div class="pet-details">
-                <h3>Pet Details</h3>
-                <div id="petDetailsContent"></div>
-            </div>
-            <button class="close-modal">Close</button>
-        </div>
-    </div>
+    <footer>
+        <p>&copy; <span id="currentYear"></span> Paws Connect. All rights reserved.</p>
+    </footer>
 
-    <script src="register-pet.js"></script>
+<script src="register-pet.js"></script>
 </body>
 </html>
