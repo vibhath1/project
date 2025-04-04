@@ -5,8 +5,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const stepIndicators = document.querySelectorAll('.step');
     const successAnimation = document.getElementById('successAnimation');
     const vetList = document.getElementById('vetList');
+    const viewHistoryLink = document.getElementById('viewHistory');
+    const historySection = document.getElementById('consultation-history');
+    const historyList = document.getElementById('history-list');
+    const consultationForm = document.querySelector('.form-wrapper');
 
-    // Sample vet data (in production, this would come from an API)
+    // Sample vet data
     const vets = [
         {
             id: 1,
@@ -39,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let currentStep = 1;
     let selectedVet = null;
+    let consultationHistory = JSON.parse(localStorage.getItem('consultationHistory')) || [];
 
     // Update progress bar
     function updateProgress() {
@@ -138,6 +143,72 @@ document.addEventListener('DOMContentLoaded', function() {
         return isValid;
     }
 
+    // View history link click handler
+    viewHistoryLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        showHistory();
+    });
+
+    // Show history section
+    function showHistory() {
+        consultationForm.classList.add('hidden');
+        historySection.classList.remove('hidden');
+        populateHistoryList();
+    }
+
+    // Show consultation form
+    window.showConsultationForm = function() {
+        historySection.classList.add('hidden');
+        consultationForm.classList.remove('hidden');
+        showStep(1);
+    }
+
+    // Populate history list
+    function populateHistoryList() {
+        if (consultationHistory.length === 0) {
+            historyList.innerHTML = `
+                <div class="empty-history">
+                    <i class="fas fa-calendar-check"></i>
+                    <p>No consultations found. Schedule your first consultation!</p>
+                </div>
+            `;
+            return;
+        }
+
+        historyList.innerHTML = consultationHistory.map((consult, index) => `
+            <div class="history-item" data-id="${consult.id}">
+                <h3>Consultation with ${consult.vetName}</h3>
+                <p><strong>Pet:</strong> ${consult.petType}, ${consult.petAge} years old</p>
+                <p><strong>Symptoms:</strong> ${consult.symptoms}</p>
+                <p><strong>Scheduled for:</strong> ${consult.consultDate} at ${consult.timeSlot}</p>
+                <p><strong>Status:</strong> <span class="status status-${consult.status}">${consult.status}</span></p>
+                ${consult.status === 'scheduled' ? 
+                    `<button class="cancel-btn" data-id="${consult.id}">Cancel Consultation</button>` : ''}
+            </div>
+        `).join('');
+
+        // Add cancel button handlers
+        document.querySelectorAll('.cancel-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const id = parseInt(this.dataset.id);
+                cancelConsultation(id);
+            });
+        });
+    }
+
+    // Cancel a consultation
+    function cancelConsultation(id) {
+        if (confirm('Are you sure you want to cancel this consultation?')) {
+            const index = consultationHistory.findIndex(c => c.id === id);
+            if (index !== -1) {
+                consultationHistory[index].status = 'cancelled';
+                localStorage.setItem('consultationHistory', JSON.stringify(consultationHistory));
+                populateHistoryList();
+                alert('Consultation cancelled successfully');
+            }
+        }
+    }
+
     // Handle form submission
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -154,6 +225,31 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             // Simulate API call
             await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // Get form data
+            const formData = new FormData(form);
+            const vet = vets.find(v => v.id === selectedVet);
+            const vetCard = document.querySelector(`.vet-card[data-vet-id="${selectedVet}"]`);
+            const selectedTime = vetCard ? vetCard.querySelector('.time-select').value : '';
+            
+            // Create consultation object
+            const consultation = {
+                id: Date.now(),
+                vetId: selectedVet,
+                vetName: vet.name,
+                petType: formData.get('petType'),
+                petAge: formData.get('petAge'),
+                symptoms: formData.get('symptoms'),
+                consultDate: formData.get('consultDate'),
+                timeSlot: formData.get('timeSlot'),
+                selectedTime: selectedTime,
+                status: 'scheduled',
+                createdAt: new Date().toISOString()
+            };
+            
+            // Add to history
+            consultationHistory.unshift(consultation);
+            localStorage.setItem('consultationHistory', JSON.stringify(consultationHistory));
 
             // Show success animation
             successAnimation.classList.remove('hidden');
@@ -180,4 +276,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize form
     updateProgress();
+    showStep(1);
 });

@@ -7,14 +7,13 @@
     <link rel="stylesheet" href="consult.css">
 </head>
 <body>
-    <!-- Navigation Bar -->
     <nav class="navbar fixed-navbar">
         <div class="nav-content">
             <div class="nav-logo">
                 <a href="index.html">Paws Connect</a>
             </div>
-            <div class="nav-menu">
-                <a href="b3.html">View Bookings</a>
+            <div class="nav-links">
+                <a href="#" id="viewHistory">View Consultation History</a>
             </div>
         </div>
     </nav>
@@ -144,6 +143,17 @@
                 </div>
             </form>
         </div>
+
+        <!-- Consultation History Section -->
+        <section id="consultation-history" class="hidden">
+            <div class="history-container">
+                <h2>Your Consultation History</h2>
+                <div id="history-list" class="history-list">
+                    <!-- History items will be populated here -->
+                </div>
+                <button class="back-to-form" onclick="showConsultationForm()">Back to Consultation</button>
+            </div>
+        </section>
 
         <!-- Success Animation -->
         <div class="success-animation hidden" id="successAnimation">
