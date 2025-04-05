@@ -2,14 +2,13 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     // --- DOM Element References ---
-    const bookingForm = document.getElementById('groomingBookingForm'); // Use ID selector
+    const bookingForm = document.getElementById('groomingBookingForm');
     const bookedAppointmentsList = document.getElementById('bookedAppointmentsList');
     const noAppointmentsMessage = document.getElementById('noAppointmentsMessage');
     const bookingSuccessMessageDiv = document.getElementById('bookingSuccessMessage');
     const dateInput = document.getElementById('date');
     const serviceSelect = document.getElementById('service');
     const navbar = document.querySelector('.navbar');
-    const STORAGE_KEY = 'pawsConnectBookings'; // Define localStorage key
 
     // --- Booking Form Handling ---
     if (bookingForm) {
@@ -31,23 +30,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Basic Validation (HTML required attributes handle most cases)
             if (!petName || !service || !date || !time) {
-                // Although required attributes exist, keep a JS check as fallback
                 alert('Please ensure all required fields (Pet Name, Service, Date, Time) are filled.');
                 return;
             }
 
             // Create booking object with a unique ID
             const booking = {
-                id: Date.now(), // Unique ID for cancellation
+                id: Date.now(),
                 petName,
-                service, // Store service value ('basic', 'full', 'premium')
+                service,
                 date,
                 time,
-                notes,
-                // timestamp: new Date().toISOString() // Optional: keep if needed
+                notes
             };
 
-            // Store booking
+            // Store booking via API
             saveBooking(booking);
 
             // Show confirmation message in the dedicated div
@@ -59,37 +56,51 @@ document.addEventListener('DOMContentLoaded', function() {
             // Refresh the displayed bookings list
             loadAndDisplayBookings();
 
-             // Scroll to the success message or booking list for visibility
+            // Scroll to the success message for visibility
             bookingSuccessMessageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
     }
 
     // --- Booking Storage & Display ---
 
-    // Function to save booking to localStorage
-    function saveBooking(booking) {
-        let existingBookings = getBookingsFromStorage();
-        existingBookings.push(booking);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(existingBookings));
-    }
-
-    // Function to get bookings from localStorage
-    function getBookingsFromStorage() {
-        const bookingsJson = localStorage.getItem(STORAGE_KEY);
+    // Function to save booking via API
+    async function saveBooking(booking) {
         try {
-            return bookingsJson ? JSON.parse(bookingsJson) : [];
-        } catch (e) {
-            console.error("Error parsing bookings from localStorage:", e);
-            return []; // Return empty array on error
+            const response = await fetch('http://127.0.0.1:5000/api/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(booking)
+            });
+            if (!response.ok) {
+                throw new Error('Failed to save booking');
+            }
+            const savedBooking = await response.json();
+            // No need to manually update local list since loadAndDisplayBookings fetches fresh data
+        } catch (error) {
+            console.error('Error saving booking:', error);
+            alert('Failed to save booking. Please try again.');
         }
     }
 
-    // Function to display booking confirmation message in the booking section
-    function showBookingConfirmation(booking) {
-        if (!bookingSuccessMessageDiv) return; // Exit if the div doesn't exist
+    // Function to get bookings from API
+    async function getBookingsFromStorage() {
+        try {
+            const response = await fetch('http://127.0.0.1:5000/api/bookings');
+            if (!response.ok) {
+                throw new Error('Failed to fetch bookings');
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching bookings:', error);
+            return [];
+        }
+    }
 
-        // Get service display name
-        const serviceText = serviceSelect.options[serviceSelect.selectedIndex]?.text || booking.service; // Fallback to value
+    // Function to display booking confirmation message
+    function showBookingConfirmation(booking) {
+        if (!bookingSuccessMessageDiv) return;
+
+        const serviceText = serviceSelect.options[serviceSelect.selectedIndex]?.text || booking.service;
 
         bookingSuccessMessageDiv.innerHTML = `
             <strong>Booking Confirmed!</strong><br>
@@ -99,51 +110,44 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         bookingSuccessMessageDiv.style.display = 'block';
 
-        // Optional: Hide the message after a few seconds
         setTimeout(() => {
-            if (bookingSuccessMessageDiv) { // Check again in case the user navigated away
-                 bookingSuccessMessageDiv.style.display = 'none';
-                 bookingSuccessMessageDiv.innerHTML = ''; // Clear content
+            if (bookingSuccessMessageDiv) {
+                bookingSuccessMessageDiv.style.display = 'none';
+                bookingSuccessMessageDiv.innerHTML = '';
             }
-        }, 5000); // Hide after 5 seconds
+        }, 5000);
     }
 
-
     // Function to load and display all booked appointments
-    function loadAndDisplayBookings() {
-        if (!bookedAppointmentsList || !noAppointmentsMessage) return; // Exit if elements aren't found
+    async function loadAndDisplayBookings() {
+        if (!bookedAppointmentsList || !noAppointmentsMessage) return;
 
-        const bookings = getBookingsFromStorage();
-        bookedAppointmentsList.innerHTML = ''; // Clear current list
+        const bookings = await getBookingsFromStorage();
+        bookedAppointmentsList.innerHTML = '';
 
         if (bookings.length === 0) {
             noAppointmentsMessage.style.display = 'block';
-            bookedAppointmentsList.style.display = 'none'; // Hide the list container
+            bookedAppointmentsList.style.display = 'none';
         } else {
             noAppointmentsMessage.style.display = 'none';
-            bookedAppointmentsList.style.display = 'grid'; // Ensure list container is visible (use grid as per CSS)
+            bookedAppointmentsList.style.display = 'grid';
 
-            // Sort bookings by date and time for better readability (optional)
             bookings.sort((a, b) => {
                 const dateTimeA = new Date(`${a.date}T${a.time}`);
                 const dateTimeB = new Date(`${b.date}T${b.time}`);
                 return dateTimeA - dateTimeB;
             });
 
-
             bookings.forEach(booking => {
-                // Find the display text for the service
-                let serviceDisplayText = booking.service; // Default to stored value
-                // Find the option in the select dropdown matching the stored service value
+                let serviceDisplayText = booking.service;
                 const serviceOption = Array.from(serviceSelect.options).find(opt => opt.value === booking.service);
                 if (serviceOption) {
-                    serviceDisplayText = serviceOption.text; // Use the option's text
+                    serviceDisplayText = serviceOption.text;
                 }
-
 
                 const card = document.createElement('div');
                 card.classList.add('appointment-card');
-                card.setAttribute('data-booking-id', booking.id); // Set data attribute for cancellation
+                card.setAttribute('data-booking-id', booking.id);
 
                 card.innerHTML = `
                     <div class="appointment-details">
@@ -162,13 +166,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Booking Cancellation ---
 
-    // Event delegation for cancel buttons
     if (bookedAppointmentsList) {
         bookedAppointmentsList.addEventListener('click', function(event) {
             if (event.target.classList.contains('cancel-button')) {
                 const card = event.target.closest('.appointment-card');
                 if (card) {
-                    const bookingId = parseInt(card.getAttribute('data-booking-id'), 10); // Ensure it's a number
+                    const bookingId = parseInt(card.getAttribute('data-booking-id'), 10);
                     if (!isNaN(bookingId)) {
                         cancelBooking(bookingId);
                     } else {
@@ -179,108 +182,93 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Function to cancel a booking
-    function cancelBooking(bookingId) {
+    // Function to cancel a booking via API
+    async function cancelBooking(bookingId) {
         if (confirm('Are you sure you want to cancel this appointment?')) {
-            let bookings = getBookingsFromStorage();
-            // Filter out the booking with the matching ID
-            const updatedBookings = bookings.filter(booking => booking.id !== bookingId);
-
-            // Save the updated list back to localStorage
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedBookings));
-
-            // Refresh the displayed list
-            loadAndDisplayBookings();
-
-            alert('Appointment cancelled successfully.'); // Provide feedback
+            try {
+                const response = await fetch(`http://127.0.0.1:5000/api/bookings/${bookingId}`, {
+                    method: 'DELETE'
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to cancel booking');
+                }
+                const data = await response.json();
+                alert(data.message);
+                await loadAndDisplayBookings(); // Refresh the list after cancellation
+            } catch (error) {
+                console.error('Error cancelling booking:', error);
+                alert('Failed to cancel booking. Please try again.');
+            }
         }
     }
 
     // --- Utility Functions ---
 
-    // Format date for display
     function formatDate(dateString) {
         if (!dateString) return 'N/A';
-        // Add time component to avoid timezone issues with toLocaleDateString
         const date = new Date(dateString + 'T00:00:00');
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return date.toLocaleDateString(undefined, options);
     }
 
-    // Format time for display (Handles 24hr input)
     function formatTime(timeString) {
         if (!timeString) return 'N/A';
         const [hours, minutes] = timeString.split(':');
         const hour = parseInt(hours, 10);
-        const minute = minutes || '00'; // Default to 00 if minutes are missing
-
+        const minute = minutes || '00';
         const ampm = hour >= 12 ? 'PM' : 'AM';
-        const hour12 = hour % 12 || 12; // Convert 0 to 12 for 12 AM/PM
-
-        // Pad minutes with leading zero if needed
-        const paddedMinute = minute.padStart(2,'0');
-
+        const hour12 = hour % 12 || 12;
+        const paddedMinute = minute.padStart(2, '0');
         return `${hour12}:${paddedMinute} ${ampm}`;
     }
 
-     // Simple HTML escaping function to prevent XSS
-     function escapeHTML(str) {
+    function escapeHTML(str) {
         if (!str) return '';
         const div = document.createElement('div');
         div.appendChild(document.createTextNode(str));
         return div.innerHTML;
-     }
-
+    }
 
     // --- Initial Setup ---
 
-    // Initialize date picker minimum date
     if (dateInput) {
         const today = new Date();
-        // Adjust for local timezone offset before formatting
         today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
         const formattedToday = today.toISOString().split('T')[0];
         dateInput.setAttribute('min', formattedToday);
     }
 
-    // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
-
             const targetId = this.getAttribute('href');
-            if (targetId === '#') return; // Ignore empty hrefs
-
+            if (targetId === '#') return;
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
-                // Calculate offset dynamically based on navbar height if it exists
                 const navbarHeight = navbar ? navbar.offsetHeight : 0;
-                const offset = 20; // Extra space above the section
-
+                const offset = 20;
                 window.scrollTo({
-                    top: targetElement.offsetTop - navbarHeight - offset, // Adjust for fixed navbar and extra space
+                    top: targetElement.offsetTop - navbarHeight - offset,
                     behavior: 'smooth'
                 });
             }
         });
     });
 
-    // Handle navigation bar scrolling effect
     if (navbar) {
         window.addEventListener('scroll', function() {
-            if (window.scrollY > 50) { // Trigger earlier
+            if (window.scrollY > 50) {
                 navbar.classList.add('scrolled');
             } else {
                 navbar.classList.remove('scrolled');
             }
         });
-        // Initial check in case the page is loaded already scrolled down
         if (window.scrollY > 50) {
-             navbar.classList.add('scrolled');
+            navbar.classList.add('scrolled');
         }
     }
 
-    // Initial load of bookings when the page is ready
+    // Initial load of bookings
     loadAndDisplayBookings();
 
 }); // End DOMContentLoaded

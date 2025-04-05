@@ -45,3 +45,111 @@ body {
     font-size: 0.9rem;
     margin-top: auto; /* Pushes footer down if content is short (alternative to flex-grow on main) */
 }
+.confirmation-section {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.confirmation-section h1 {
+    text-align: center;
+    color: #333;
+}
+
+#confirmationDetails {
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+.boarding-entry {
+    margin-bottom: 20px;
+}
+
+.boarding-entry p {
+    margin: 5px 0;
+}
+
+.boarding-entry hr {
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 10px 0;
+}
+
+#backButton {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#backButton:hover {
+    background-color: #0056b3;
+}
+.confirmation-section {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.confirmation-section h1 {
+    text-align: center;
+    color: #333;
+}
+
+#confirmationDetails {
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+.boarding-entry {
+    margin-bottom: 20px;
+}
+
+.boarding-entry p {
+    margin: 5px 0;
+}
+
+.boarding-entry hr {
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 10px 0;
+}
+
+.cancel-button {
+    padding: 5px 10px;
+    background-color: #dc3545; /* Red for cancel */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.cancel-button:hover {
+    background-color: #c82333;
+}
+
+#backButton {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#backButton:hover {
+    background-color: #0056b3;
+}

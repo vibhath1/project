@@ -3,23 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paws Connect</title>
+    <title>Paws Connect - Boarding Confirmation</title>
     <link rel="stylesheet" href="sle.css">
 </head>
 <body>
-
     <header class="navbar">
         <div class="logo">
             Paws Connect
         </div>
-        </header>
+    </header>
 
     <main class="content">
-           </main>
+        <section class="confirmation-section">
+            <h1>Boarding Confirmation</h1>
+            <div id="confirmationDetails">
+                <!-- All boarding details will be inserted here -->
+            </div>
+            <button id="backButton">Back to Booking</button>
+        </section>
+    </main>
 
     <footer class="site-footer">
-        <p>&copy; Copyright 2025 Paws Connect. All Rights Reserved.</p>
+        <p>© Copyright 2025 Paws Connect. All Rights Reserved.</p>
     </footer>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const confirmationDiv = document.getElementById('confirmationDetails');
+            
+            // Function to load and display all boardings
+            async function loadBoardings() {
+                try {
+                    const response = await fetch('http://127.0.0.1:5000/api/boardings');
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(`Failed to fetch boarding details: ${response.status} - ${errorText}`);
+                    }
+                    const boardings = await response.json();
+                    
+                    if (boardings.length > 0) {
+                        let htmlContent = '';
+                        boardings.forEach(boarding => {
+                            htmlContent += `
+                                <div class="boarding-entry" data-id="${boarding.id}">
+                                    <p><strong>Pet Name:</strong> ${boarding.petName}</p>
+                                    <p><strong>Package:</strong> ${boarding.packageType.charAt(0).toUpperCase() + boarding.packageType.slice(1)}</p>
+                                    <p><strong>Check-In:</strong> ${formatDate(boarding.checkIn)}</p>
+                                    <p><strong>Check-Out:</strong> ${formatDate(boarding.checkOut)}</p>
+                                    <p><strong>Special Needs:</strong> ${boarding.specialNeeds || 'None'}</p>
+                                    <p><strong>Total Price:</strong> ₹${boarding.totalPrice}</p>
+                                    <button class="cancel-button" data-id="${boarding.id}">Cancel Booking</button>
+                                    <hr>
+                                </div>
+                            `;
+                        });
+                        confirmationDiv.innerHTML = htmlContent;
+
+                        // Add event listeners to cancel buttons
+                        document.querySelectorAll('.cancel-button').forEach(button => {
+                            button.addEventListener('click', async function() {
+                                const boardingId = this.getAttribute('data-id');
+                                if (confirm('Are you sure you want to cancel this boarding booking?')) {
+                                    await cancelBoarding(boardingId);
+                                }
+                            });
+                        });
+                    } else {
+                        confirmationDiv.innerHTML = '<p>No boarding bookings found.</p>';
+                    }
+                } catch (error) {
+                    console.error('Error fetching boarding details:', error);
+                    confirmationDiv.innerHTML = `<p>Failed to load boarding details: ${error.message}. Please try again later.</p>`;
+                }
+            }
+
+            // Function to cancel a boarding
+            async function cancelBoarding(boardingId) {
+                try {
+                    const response = await fetch(`http://127.0.0.1:5000/api/boardings/${boardingId}`, {
+                        method: 'DELETE'
+                    });
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(`Failed to cancel boarding: ${response.status} - ${errorText}`);
+                    }
+                    const data = await response.json();
+                    alert(data.message); // "Booking cancelled"
+                    // Reload the boardings list after cancellation
+                    await loadBoardings();
+                } catch (error) {
+                    console.error('Error cancelling boarding:', error);
+                    alert(`Failed to cancel boarding: ${error.message}`);
+                }
+            }
+
+            // Initial load of boardings
+            await loadBoardings();
+
+            // Back button functionality
+            document.getElementById('backButton').addEventListener('click', function() {
+                window.location.href = 'index.html'; // Replace with your boarding page filename
+            });
+
+            // Format date function
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                return date.toLocaleDateString(undefined, options);
+            }
+        });
+    </script>
 </body>
 </html>

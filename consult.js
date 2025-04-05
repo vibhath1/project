@@ -10,40 +10,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const historyList = document.getElementById('history-list');
     const consultationForm = document.querySelector('.form-wrapper');
 
-    // Sample vet data
+    // Sample vet data (could be fetched from backend if dynamic)
     const vets = [
-        {
-            id: 1,
-            name: 'Dr. Sarah Johnson',
-            credentials: 'DVM, DACVIM',
-            clinic: 'Pawsome Pet Care Center',
-            location: 'Downtown Pet Hospital',
-            fee: '$75',
-            availability: ['9:00 AM', '11:00 AM', '2:00 PM']
-        },
-        {
-            id: 2,
-            name: 'Dr. Michael Chen',
-            credentials: 'DVM, DABVP',
-            clinic: 'Happy Tails Veterinary Clinic',
-            location: 'Sunset Pet Care',
-            fee: '$85',
-            availability: ['10:00 AM', '1:00 PM', '4:00 PM']
-        },
-        {
-            id: 3,
-            name: 'Dr. Emily Rodriguez',
-            credentials: 'DVM, CVA',
-            clinic: 'Healing Paws Animal Hospital',
-            location: 'Valley View Vet Center',
-            fee: '$70',
-            availability: ['9:30 AM', '12:00 PM', '3:30 PM']
-        }
+        { id: 1, name: 'Dr. Sarah Johnson', credentials: 'DVM, DACVIM', clinic: 'Pawsome Pet Care Center', location: 'Downtown Pet Hospital', fee: '$75', availability: ['9:00 AM', '11:00 AM', '2:00 PM'] },
+        { id: 2, name: 'Dr. Michael Chen', credentials: 'DVM, DABVP', clinic: 'Happy Tails Veterinary Clinic', location: 'Sunset Pet Care', fee: '$85', availability: ['10:00 AM', '1:00 PM', '4:00 PM'] },
+        { id: 3, name: 'Dr. Emily Rodriguez', credentials: 'DVM, CVA', clinic: 'Healing Paws Animal Hospital', location: 'Valley View Vet Center', fee: '$70', availability: ['9:30 AM', '12:00 PM', '3:30 PM'] }
     ];
 
     let currentStep = 1;
     let selectedVet = null;
-    let consultationHistory = JSON.parse(localStorage.getItem('consultationHistory')) || [];
 
     // Update progress bar
     function updateProgress() {
@@ -70,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
         currentStep = stepNumber;
         updateProgress();
 
-        // If it's step 3, populate vet list
         if (stepNumber === 3) {
             populateVetList();
         }
@@ -88,19 +62,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="availability">
                     <p>Available slots:</p>
                     <select class="time-select">
-                        ${vet.availability.map(time => 
-                            `<option value="${time}">${time}</option>`
-                        ).join('')}
+                        ${vet.availability.map(time => `<option value="${time}">${time}</option>`).join('')}
                     </select>
                 </div>
             </div>
         `).join('');
 
-        // Add click handlers to vet cards
         document.querySelectorAll('.vet-card').forEach(card => {
             card.addEventListener('click', function() {
-                document.querySelectorAll('.vet-card').forEach(c => 
-                    c.classList.remove('selected'));
+                document.querySelectorAll('.vet-card').forEach(c => c.classList.remove('selected'));
                 this.classList.add('selected');
                 selectedVet = parseInt(this.dataset.vetId);
             });
@@ -163,53 +133,66 @@ document.addEventListener('DOMContentLoaded', function() {
         showStep(1);
     }
 
-    // Populate history list
-    function populateHistoryList() {
-        if (consultationHistory.length === 0) {
-            historyList.innerHTML = `
-                <div class="empty-history">
-                    <i class="fas fa-calendar-check"></i>
-                    <p>No consultations found. Schedule your first consultation!</p>
+    // Populate history list from API
+    async function populateHistoryList() {
+        try {
+            const response = await fetch('http://127.0.0.1:5000/api/consultations');
+            if (!response.ok) throw new Error('Failed to fetch consultation history');
+            const consultationHistory = await response.json();
+
+            if (consultationHistory.length === 0) {
+                historyList.innerHTML = `
+                    <div class="empty-history">
+                        <i class="fas fa-calendar-check"></i>
+                        <p>No consultations found. Schedule your first consultation!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            historyList.innerHTML = consultationHistory.map(consult => `
+                <div class="history-item" data-id="${consult.id}">
+                    <h3>Consultation with ${consult.vetName}</h3>
+                    <p><strong>Pet:</strong> ${consult.petType}, ${consult.petAge} years old</p>
+                    <p><strong>Symptoms:</strong> ${consult.symptoms}</p>
+                    <p><strong>Scheduled for:</strong> ${consult.consultDate} at ${consult.timeSlot}</p>
+                    <p><strong>Status:</strong> <span class="status status-${consult.status}">${consult.status}</span></p>
+                    ${consult.status === 'scheduled' ? `<button class="cancel-btn" data-id="${consult.id}">Cancel Consultation</button>` : ''}
                 </div>
-            `;
-            return;
-        }
+            `).join('');
 
-        historyList.innerHTML = consultationHistory.map((consult, index) => `
-            <div class="history-item" data-id="${consult.id}">
-                <h3>Consultation with ${consult.vetName}</h3>
-                <p><strong>Pet:</strong> ${consult.petType}, ${consult.petAge} years old</p>
-                <p><strong>Symptoms:</strong> ${consult.symptoms}</p>
-                <p><strong>Scheduled for:</strong> ${consult.consultDate} at ${consult.timeSlot}</p>
-                <p><strong>Status:</strong> <span class="status status-${consult.status}">${consult.status}</span></p>
-                ${consult.status === 'scheduled' ? 
-                    `<button class="cancel-btn" data-id="${consult.id}">Cancel Consultation</button>` : ''}
-            </div>
-        `).join('');
-
-        // Add cancel button handlers
-        document.querySelectorAll('.cancel-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const id = parseInt(this.dataset.id);
-                cancelConsultation(id);
+            // Add cancel button handlers
+            document.querySelectorAll('.cancel-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = parseInt(this.dataset.id);
+                    cancelConsultation(id);
+                });
             });
-        });
+        } catch (error) {
+            console.error('Error fetching history:', error);
+            historyList.innerHTML = `<p>Failed to load history: ${error.message}</p>`;
+        }
     }
 
-    // Cancel a consultation
-    function cancelConsultation(id) {
+    // Cancel a consultation via API
+    async function cancelConsultation(id) {
         if (confirm('Are you sure you want to cancel this consultation?')) {
-            const index = consultationHistory.findIndex(c => c.id === id);
-            if (index !== -1) {
-                consultationHistory[index].status = 'cancelled';
-                localStorage.setItem('consultationHistory', JSON.stringify(consultationHistory));
-                populateHistoryList();
-                alert('Consultation cancelled successfully');
+            try {
+                const response = await fetch(`http://127.0.0.1:5000/api/consultations/${id}`, {
+                    method: 'DELETE'
+                });
+                if (!response.ok) throw new Error('Failed to cancel consultation');
+                const data = await response.json();
+                alert(data.message);
+                populateHistoryList(); // Refresh the list
+            } catch (error) {
+                console.error('Error cancelling consultation:', error);
+                alert(`Failed to cancel consultation: ${error.message}`);
             }
         }
     }
 
-    // Handle form submission
+    // Handle form submission via API
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
 
@@ -223,33 +206,30 @@ document.addEventListener('DOMContentLoaded', function() {
         submitButton.textContent = 'Scheduling...';
 
         try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            
-            // Get form data
             const formData = new FormData(form);
             const vet = vets.find(v => v.id === selectedVet);
             const vetCard = document.querySelector(`.vet-card[data-vet-id="${selectedVet}"]`);
             const selectedTime = vetCard ? vetCard.querySelector('.time-select').value : '';
-            
-            // Create consultation object
+
             const consultation = {
                 id: Date.now(),
                 vetId: selectedVet,
                 vetName: vet.name,
                 petType: formData.get('petType'),
-                petAge: formData.get('petAge'),
+                petAge: parseInt(formData.get('petAge')),
                 symptoms: formData.get('symptoms'),
                 consultDate: formData.get('consultDate'),
-                timeSlot: formData.get('timeSlot'),
-                selectedTime: selectedTime,
-                status: 'scheduled',
-                createdAt: new Date().toISOString()
+                timeSlot: selectedTime, // Use selected time from vet availability
+                status: 'scheduled'
             };
-            
-            // Add to history
-            consultationHistory.unshift(consultation);
-            localStorage.setItem('consultationHistory', JSON.stringify(consultationHistory));
+
+            const response = await fetch('http://127.0.0.1:5000/api/consultations', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(consultation)
+            });
+            if (!response.ok) throw new Error('Failed to schedule consultation');
+            await response.json(); // Get the saved consultation
 
             // Show success animation
             successAnimation.classList.remove('hidden');
@@ -261,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred. Please try again.');
+            alert(`An error occurred: ${error.message}. Please try again.`);
 
         } finally {
             submitButton.disabled = false;
